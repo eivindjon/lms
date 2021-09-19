@@ -1,0 +1,10 @@
+// NAVBAR
+    // LINKS
+
+
+// TABLE
+ //TABLE STRUCTURE
+ //GET REQUEST - SQL QUERY
+
+// FOOTER
+s
