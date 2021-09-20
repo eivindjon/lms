@@ -1,52 +1,40 @@
-import React from "react";
-import { Table, Container, Button } from "react-bootstrap";
+import React, { useState, useEffect } from 'react';
 import Axios from "axios";
-import { useState } from "react";
 
-// const [studentList, setStudentList] = useState([]);
-
-// const getStudents = () => {
-//   Axios.get("http://localhost:3001/getstudents").then((response) => {
-//     setStudentList(response.data);
-//   });
-// };
 
 function MainTable() {
+  const [id, setId] = useState(0)
+  const [fornavn, setFornavn] = useState("")
+  const [etternavn, setEtternavn] = useState("")
+
+  const [studentList, setStudentList] = useState([])
+  
+  function getStudents () {
+      Axios.get(`http://localhost:3001/getstudents`)
+        .then(res => {
+          const students = res.data;
+          setStudentList(students);
+        })
+  }
+
+  useEffect(() => {
+    getStudents()
+    console.log("effect");
+  }, [])
+
   return (
-    <Container className="mt-5">
-      <Button onClick={console.log("Hey")}> Hey</Button>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Fornavn</th>
-            <th>Etternavn</th>
-            <th>Valg</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </Table>
-    </Container>
-  );
-}
+    <>
+      {studentList.map((val, key) => {
+          return (
+              <div>
+                <h3>ID: {val.id}</h3>
+                <h3>Fornavn: {val.fornavn}</h3>
+                <h3>Etternavn: {val.etternavn}</h3>
+              </div>)})
+      }
+    
+    </>
+  
+  )};
 
 export default MainTable;
