@@ -1,9 +1,20 @@
 import React from "react";
-import { Table, Container } from "react-bootstrap";
-//ssdas
-const MainTable = () => {
+import { Table, Container, Button } from "react-bootstrap";
+import Axios from "axios";
+import { useState } from "react";
+
+// const [studentList, setStudentList] = useState([]);
+
+// const getStudents = () => {
+//   Axios.get("http://localhost:3001/getstudents").then((response) => {
+//     setStudentList(response.data);
+//   });
+// };
+
+function MainTable() {
   return (
     <Container className="mt-5">
+      <Button onClick={console.log("Hey")}> Hey</Button>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -36,6 +47,6 @@ const MainTable = () => {
       </Table>
     </Container>
   );
-};
+}
 
 export default MainTable;
