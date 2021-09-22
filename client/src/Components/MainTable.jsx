@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { Table, Container } from "react-bootstrap";
+import { Table, Container, Button } from "react-bootstrap";
 
 function MainTable() {
   const [studentList, setStudentList] = useState([]);
-  // let absenceList = [];
+  const [absenceList, setAbsenceList] = useState([]);
 
   // Gets students from database on load (using useEffect)
   function getStudents() {
@@ -20,11 +20,10 @@ function MainTable() {
     // eslint-disable-next-line
   }, []);
 
-  // function addToAbcenseList(id) {
-  //   absenceList.push(id);
-  //   console.log(id, " pushed to absenceList");
-  // }
-
+  const handleClick = (idmann) => {
+    setAbsenceList(...absenceList, idmann);
+    //console.log(idmann);
+  };
   return (
     <>
       <Container>
@@ -44,7 +43,14 @@ function MainTable() {
                   <td>{val.id}</td>
                   <td>{val.fornavn}</td>
                   <td>{val.etternavn}</td>
-                  <td>SE FRAVÆR</td>
+                  <td>
+                    <Button
+                      href="/"{val.id}"
+                      onClick={() => handleClick(val.id)}
+                    >
+                      Borte!
+                    </Button>
+                  </td>
                 </tr>
               );
             })}
