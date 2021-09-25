@@ -4,7 +4,7 @@ import { Table, Container, Button } from "react-bootstrap";
 
 function MainTable() {
   const [studentList, setStudentList] = useState([]);
-  const [absenceList, setAbsenceList] = useState([]);
+  //const [absenceList, setAbsenceList] = useState([]);
 
   // Gets students from database on load (using useEffect)
   function getStudents() {
@@ -20,10 +20,26 @@ function MainTable() {
     // eslint-disable-next-line
   }, []);
 
-  const handleClick = (idmann) => {
-    setAbsenceList(...absenceList, idmann);
-    //console.log(idmann);
-  };
+  // poster dobbelt når man refresher osv.. Vet ikke helt hva som skjer her. Tror jeg må fikse noe med .then funksjonen. Legge inn en if res = 200 ->all good eller no.
+  function addToList(studentId) {
+    const absentStudent = { id: studentId };
+    Axios.post(`http://localhost:3001/post_absent`, absentStudent).then(
+      (res) => {
+        console.log(res.status);
+        if (res.status === 200) {
+          console.log("all good. Request status 200");
+        } else if (res.status === 400) {
+          console.log("No good status");
+        }
+      }
+    );
+  }
+
+  function handleClick(event) {
+    console.log(event.target.id);
+    addToList(event.target.id);
+    event.target.disabled = true;
+  }
   return (
     <>
       <Container>
@@ -37,16 +53,17 @@ function MainTable() {
             </tr>
           </thead>
           <tbody>
-            {studentList.map((val, key) => {
+            {studentList.map((students) => {
               return (
-                <tr>
-                  <td>{val.id}</td>
-                  <td>{val.fornavn}</td>
-                  <td>{val.etternavn}</td>
+                <tr key={students.id}>
+                  <td>{students.id}</td>
+                  <td>{students.fornavn}</td>
+                  <td>{students.etternavn}</td>
                   <td>
                     <Button
-                      href="/"{val.id}"
-                      onClick={() => handleClick(val.id)}
+                      id={students.id}
+                      onClick={handleClick}
+                      disabled={false}
                     >
                       Borte!
                     </Button>
