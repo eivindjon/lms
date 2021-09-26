@@ -25,13 +25,13 @@ app.get("/getstudents", (req, res) => {
   });
 });
 
-//Gets all absense from ONE student. //// TODO: FIX ORDER BY CLAUSE
+//Gets all absense from ONE student. 
 
 app.get("/UserStats/:id", (req, res) => {
   var id = req.params.id;
   console.log("Running query - Getting absense for student: ", req.params.id);
   db.query(
-    "SELECT navn.id, navn.fornavn, navn.etternavn, fravær.dato FROM navn, fravær WHERE fravær.personID = ? AND navn.id=? ORDER BY STR_TO_DATE(fravær.dato, '%d/%m/%Y') ASC;",
+    "SELECT navn.id, navn.fornavn, navn.etternavn, fravær.dato FROM navn, fravær WHERE fravær.personID = ? AND navn.id=? ORDER BY STR_TO_DATE(fravær.dato, '%d-%m-%Y') DESC;",
     [id, id],
     (err, result) => {
       if (err) {
