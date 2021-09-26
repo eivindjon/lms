@@ -1,12 +1,12 @@
 import "../App.css";
 import MyNavbar from "../Components/MyNavbar";
-import UserDetails from "../Components/MainTable";
+import AbsenseTable from "../Components/AbsenseTable";
 
 function UserStats() {
   return (
     <div>
       <MyNavbar />
-      <UserDetails />
+      <AbsenseTable />
     </div>
   );
 }

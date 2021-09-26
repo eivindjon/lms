@@ -67,6 +67,10 @@ function MainTable() {
                     >
                       Borte!
                     </Button>
+                    <Button
+                      href={`UserStats/${students.id}`}                  >
+                      Se Fravær
+                    </Button>
                   </td>
                 </tr>
               );
