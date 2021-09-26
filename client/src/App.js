@@ -1,12 +1,10 @@
 import "./App.css";
-import MyNavbar from "./Components/MyNavbar";
-import MainTable from "./Components/MainTable";
+import Main from "./Components/Main";
 
 function App() {
   return (
     <div>
-      <MyNavbar />
-      <MainTable />
+      <Main />
     </div>
   );
 }
