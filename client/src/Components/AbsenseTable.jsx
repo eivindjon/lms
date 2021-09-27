@@ -3,6 +3,7 @@ import Axios from "axios";
 import { Table, Container, Button, Col, Row } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import BarChart from "./BarChart";
+import Summary from "./Summary";
 
 function AbsenseTable() {
   const [absenceList, setAbsenceList] = useState([]);
@@ -13,7 +14,6 @@ function AbsenseTable() {
   //Function to get month part of absense, a part of the dataset prep for the chart on UserStats.
   function convertDates(object) {
     const dates = object;
-    console.log("dates: ", dates);
     let months = [];
     // Splits dates object into array of strings
     dates.forEach(date => months.push(date.dato.split("-")))
@@ -74,8 +74,29 @@ function AbsenseTable() {
     // eslint-disable-next-line
   }, []);
 
+  function deleteAbsense(absenseID) {
+    const deleteAbsense = { fraværID: absenseID };
+    console.log(absenceList);
+    Axios.post(`http://localhost:3001/delete_absense`, deleteAbsense).then(
+      (res) => {
+        console.log(res.status);
+        if (res.status === 200) {
+          console.log("all good. Request status 200");
+        } else if (res.status === 400) {
+          console.log("No good status");
+        }
+      }
+    );
+    // TODO : THIS DOESNT WORK. NEED TO FIND A WAY TO UPDATE STATE AND RERENDER.
+    const handleRemoveItem = absenseID => {
+      setAbsenceList(absenceList.filter(fraværID => fraværID.absenseID !== absenseID))
+  }
+  }
+
+
   function handleClick(event) {
     console.log(event.target.id);
+    deleteAbsense(event.target.id);
   }
   return (
     <>
@@ -99,8 +120,8 @@ function AbsenseTable() {
                       <td>{fravær.fornavn}</td>
                       <td>{fravær.etternavn}</td>
                       <td>
-                        <Button id={fravær.id} onClick={handleClick}>
-                          Endre
+                        <Button variant="danger" id={fravær.fraværID} onClick={handleClick}>
+                          Slett
                         </Button>
                       </td>
                     </tr>
@@ -111,6 +132,7 @@ function AbsenseTable() {
           </Col>
           <Col sm={6}>
             <BarChart data={monthCounter}/>
+            <Summary data={monthCounter}/>
           </Col>
         </Row>
       </Container>

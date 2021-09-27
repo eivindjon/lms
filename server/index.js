@@ -31,7 +31,7 @@ app.get("/UserStats/:id", (req, res) => {
   var id = req.params.id;
   console.log("Running query - Getting absense for student: ", req.params.id);
   db.query(
-    "SELECT navn.id, navn.fornavn, navn.etternavn, fravær.dato FROM navn, fravær WHERE fravær.personID = ? AND navn.id=? ORDER BY STR_TO_DATE(fravær.dato, '%d-%m-%Y') DESC;",
+    "SELECT navn.id, navn.fornavn, navn.etternavn, fravær.dato, fravær.fraværID FROM navn, fravær WHERE fravær.personID = ? AND navn.id=? ORDER BY STR_TO_DATE(fravær.dato, '%d-%m-%Y') DESC;",
     [id, id],
     (err, result) => {
       if (err) {
@@ -56,6 +56,19 @@ app.post("/post_absent", (req, res) => {
     dato: today
   };
   db.query("INSERT INTO fravær SET ?", absentStudent, (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/delete_absense", (req, res) => {
+  console.log("Deleting absense: ", req.body.fraværID);
+
+  const absense = [req.body.fraværID]
+  db.query("DELETE FROM fravær WHERE fraværID = ?", absense, (err, result) => {
     if (err) {
       throw err;
     } else {

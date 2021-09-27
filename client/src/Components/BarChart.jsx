@@ -2,13 +2,13 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 
 const BarChart = (props) => {
-
+  const propdata = props.data;
   const data = {
     labels: ["Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember"],
     datasets: [
       {
         label: 'Fraværsdager',
-        data: props.data,
+        data: propdata,
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
