@@ -6,25 +6,65 @@ import BarChart from "./BarChart";
 
 function AbsenseTable() {
   const [absenceList, setAbsenceList] = useState([]);
-  const monthCounter = new Array(12).fill(0)
+  const [monthCounter, setMonthCounter] = useState(new Array(12).fill(0)); 
   const location = useLocation();
 
+
+  //Function to get month part of absense, a part of the dataset prep for the chart on UserStats.
   function convertDates(object) {
     const dates = object;
     console.log("dates: ", dates);
-    let ddmmyyyy = []
     let months = [];
+    // Splits dates object into array of strings
     dates.forEach(date => months.push(date.dato.split("-")))
-    console.log("Months variable: ", months)
+    
+    //Double map for å komme inn i subarray [[],[]] og konvertere disse til INT. 
+    var monthsInt = months.map(function(subarray) {
+      return subarray.map(function(string) {
+         return parseInt(string);
+      })
+   })
+   // Stage changes før setstate
+   let stagedMonths = new Array(12).fill(0);
+    //Phew, denne var støgg.. Pusher inn i array monthsCounter som teller hvor mange forekomster det er i hver måned. Prepper datamateriale for chart.
+    for (var i = 0; i < monthsInt.length; i++) {
+      if(monthsInt[i][1] === 1) {
+        stagedMonths[0] += 1;
+      } else if (monthsInt[i][1] === 2) {
+        stagedMonths[1] += 1;
+      } else if (monthsInt[i][1] === 3) {
+        stagedMonths[2] += 1;
+      } else if (monthsInt[i][1] === 4) {
+        stagedMonths[3] += 1;
+      } else if (monthsInt[i][1] === 5) {
+        stagedMonths[4] += 1;
+      } else if (monthsInt[i][1] === 6) {
+        stagedMonths[5] += 1;
+      } else if (monthsInt[i][1] === 7) {
+        stagedMonths[6] += 1;
+      } else if (monthsInt[i][1] === 8) {
+        stagedMonths[7] += 1;
+      } else if (monthsInt[i][1] === 9) {
+        stagedMonths[8] += 1;
+      } else if (monthsInt[i][1] === 10) {
+        stagedMonths[9] += 1;
+      } else if (monthsInt[i][1] === 11) {
+        stagedMonths[10] += 1;
+      } else if (monthsInt[i][1] === 12) {
+        stagedMonths[11] += 1;
+      } else {console.log("outside month range")}
+    }
+
+    setMonthCounter(stagedMonths);
   }
 
   // Gets students from database on load (using useEffect)
   function getStudentAbsense() {
-    console.log("Value of useLocation.location.pathname: ", location.pathname);
+    // Using useLocation() to get path with studentID. This is passed to backend to perform query.
+    // console.log("Value of useLocation.location.pathname: ", location.pathname);
     Axios.get(`http://localhost:3001${location.pathname}`).then((res) => {
       const absense = res.data;
       setAbsenceList(absense);
-      console.log(absense);
       convertDates(absense);
     });
   }
@@ -54,7 +94,7 @@ function AbsenseTable() {
               <tbody>
                 {absenceList.map((fravær) => {
                   return (
-                    <tr key={fravær.id}>
+                    <tr key={fravær.dato}>
                       <td>{fravær.dato}</td>
                       <td>{fravær.fornavn}</td>
                       <td>{fravær.etternavn}</td>
@@ -70,7 +110,7 @@ function AbsenseTable() {
             </Table>
           </Col>
           <Col sm={6}>
-            <BarChart />
+            <BarChart data={monthCounter}/>
           </Col>
         </Row>
       </Container>
