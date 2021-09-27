@@ -76,10 +76,9 @@ function AbsenseTable() {
 
   function deleteAbsense(absenseID) {
     const deleteAbsense = { fraværID: absenseID };
-    console.log(absenceList);
+    const fraværID = parseInt(absenseID);
     Axios.post(`http://localhost:3001/delete_absense`, deleteAbsense).then(
       (res) => {
-        console.log(res.status);
         if (res.status === 200) {
           console.log("all good. Request status 200");
         } else if (res.status === 400) {
@@ -87,15 +86,19 @@ function AbsenseTable() {
         }
       }
     );
-    // TODO : THIS DOESNT WORK. NEED TO FIND A WAY TO UPDATE STATE AND RERENDER.
-    const handleRemoveItem = absenseID => {
-      setAbsenceList(absenceList.filter(fraværID => fraværID.absenseID !== absenseID))
-  }
+    console.log("deleting: ", absenseID);
+    console.log("absenceList looks like: ", absenceList);
+    let arr = [...absenceList];
+    console.log("arr var looks like: ", arr)
+    let index = arr.findIndex(absence => absence.fraværID === fraværID);
+    console.log("index of absenseID: ", index);
+    arr.slice(index);
+    setAbsenceList(arr);
+    console.log("AbsenceList now looks like: ", absenceList)
   }
 
 
   function handleClick(event) {
-    console.log(event.target.id);
     deleteAbsense(event.target.id);
   }
   return (
@@ -115,7 +118,7 @@ function AbsenseTable() {
               <tbody>
                 {absenceList.map((fravær) => {
                   return (
-                    <tr key={fravær.dato}>
+                    <tr key={fravær.fraværID}>
                       <td>{fravær.dato}</td>
                       <td>{fravær.fornavn}</td>
                       <td>{fravær.etternavn}</td>
