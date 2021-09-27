@@ -39,6 +39,9 @@ const BarChart = (props) => {
       yAxes: [
         {
           ticks: {
+            min: 0,
+            max: 10,
+            stepSize: 1,
             beginAtZero: true,
           },
         },
