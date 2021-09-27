@@ -16,7 +16,6 @@ function MainTable() {
   // Making the request to get students from db only ONCE. When render is complete. Instead of ComponentDidMount();
   useEffect(() => {
     getStudents();
-    console.log(studentList);
     // eslint-disable-next-line
   }, []);
 
@@ -25,9 +24,8 @@ function MainTable() {
     const absentStudent = { id: studentId };
     Axios.post(`http://localhost:3001/post_absent`, absentStudent).then(
       (res) => {
-        console.log(res.status);
         if (res.status === 200) {
-          console.log("all good. Request status 200");
+          console.log("Absence logged", studentId);
         } else if (res.status === 400) {
           console.log("No good status");
         }
@@ -36,7 +34,6 @@ function MainTable() {
   }
 
   function handleClick(event) {
-    console.log(event.target.id);
     addToList(event.target.id);
     event.target.disabled = true;
   }
@@ -67,10 +64,7 @@ function MainTable() {
                     >
                       Borte!
                     </Button>
-                    <Button
-                      href={`UserStats/${students.id}`}                  >
-                      Se Fravær
-                    </Button>
+                    <Button href={`UserStats/${students.id}`}>Se Fravær</Button>
                   </td>
                 </tr>
               );

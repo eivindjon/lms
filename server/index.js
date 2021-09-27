@@ -25,7 +25,7 @@ app.get("/getstudents", (req, res) => {
   });
 });
 
-//Gets all absense from ONE student. 
+//Gets all absense from ONE student.
 
 app.get("/UserStats/:id", (req, res) => {
   var id = req.params.id;
@@ -46,14 +46,14 @@ app.get("/UserStats/:id", (req, res) => {
 app.post("/post_absent", (req, res) => {
   console.log("Posting Absent: ", req.body.id);
   var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
 
-  today = dd + '-' + mm + '-' + yyyy;
+  today = dd + "-" + mm + "-" + yyyy;
   const absentStudent = {
     personID: req.body.id,
-    dato: today
+    dato: today,
   };
   db.query("INSERT INTO fravær SET ?", absentStudent, (err, result) => {
     if (err) {
@@ -67,7 +67,7 @@ app.post("/post_absent", (req, res) => {
 app.post("/delete_absense", (req, res) => {
   console.log("Deleting absense: ", req.body.fraværID);
 
-  const absense = [req.body.fraværID]
+  const absense = [req.body.fraværID];
   db.query("DELETE FROM fravær WHERE fraværID = ?", absense, (err, result) => {
     if (err) {
       throw err;

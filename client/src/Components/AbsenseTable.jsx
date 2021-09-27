@@ -7,28 +7,29 @@ import Summary from "./Summary";
 
 function AbsenseTable() {
   const [absenceList, setAbsenceList] = useState([]);
-  const [monthCounter, setMonthCounter] = useState(new Array(12).fill(0)); 
+  const [monthCounter, setMonthCounter] = useState(new Array(12).fill(0));
   const location = useLocation();
-
 
   //Function to get month part of absense, a part of the dataset prep for the chart on UserStats.
   function convertDates(object) {
     const dates = object;
     let months = [];
     // Splits dates object into array of strings
-    dates.forEach(date => months.push(date.dato.split("-")))
-    
-    //Double map for å komme inn i subarray [[],[]] og konvertere disse til INT. 
-    var monthsInt = months.map(function(subarray) {
-      return subarray.map(function(string) {
-         return parseInt(string);
-      })
-   })
-   // Stage changes før setstate
-   let stagedMonths = new Array(12).fill(0);
+    dates.forEach((date) => months.push(date.dato.split("-")));
+
+    //Double map for å komme inn i subarray [[],[]] og konvertere disse til INT.
+    var monthsInt = months.map(function (subarray) {
+      return subarray.map(function (string) {
+        return parseInt(string);
+      });
+    });
+    // Stage changes før setstate
+    let stagedMonths = new Array(12).fill(0);
     //Phew, denne var støgg.. Pusher inn i array monthsCounter som teller hvor mange forekomster det er i hver måned. Prepper datamateriale for chart.
+
+    //TODO: make this its own function
     for (var i = 0; i < monthsInt.length; i++) {
-      if(monthsInt[i][1] === 1) {
+      if (monthsInt[i][1] === 1) {
         stagedMonths[0] += 1;
       } else if (monthsInt[i][1] === 2) {
         stagedMonths[1] += 1;
@@ -52,7 +53,9 @@ function AbsenseTable() {
         stagedMonths[10] += 1;
       } else if (monthsInt[i][1] === 12) {
         stagedMonths[11] += 1;
-      } else {console.log("outside month range")}
+      } else {
+        console.log("outside month range");
+      }
     }
 
     setMonthCounter(stagedMonths);
@@ -61,7 +64,6 @@ function AbsenseTable() {
   // Gets students from database on load (using useEffect)
   function getStudentAbsense() {
     // Using useLocation() to get path with studentID. This is passed to backend to perform query.
-    // console.log("Value of useLocation.location.pathname: ", location.pathname);
     Axios.get(`http://localhost:3001${location.pathname}`).then((res) => {
       const absense = res.data;
       setAbsenceList(absense);
@@ -76,36 +78,45 @@ function AbsenseTable() {
 
   function deleteAbsense(absenseID) {
     const deleteAbsense = { fraværID: absenseID };
-    const fraværID = parseInt(absenseID);
     Axios.post(`http://localhost:3001/delete_absense`, deleteAbsense).then(
       (res) => {
         if (res.status === 200) {
-          console.log("all good. Request status 200");
+          console.log("deleted", absenseID);
         } else if (res.status === 400) {
           console.log("No good status");
         }
       }
     );
-    console.log("deleting: ", absenseID);
-    console.log("absenceList looks like: ", absenceList);
-    let arr = [...absenceList];
-    console.log("arr var looks like: ", arr)
-    let index = arr.findIndex(absence => absence.fraværID === fraværID);
-    console.log("index of absenseID: ", index);
-    arr.slice(index);
-    setAbsenceList(arr);
-    console.log("AbsenceList now looks like: ", absenceList)
+    // console.log("deleting: ", absenseID);
+    // console.log("absenceList looks like: ", absenceList);
+    // let arr = [...absenceList];
+    // console.log("arr var looks like: ", arr)
+    // let index = arr.findIndex(absence => absence.fraværID === fraværID);
+    // console.log("index of absenseID: ", index);
+    // arr.slice(index);
+    // setAbsenceList(arr);
+    // console.log("AbsenceList now looks like: ", absenceList)
   }
-
 
   function handleClick(event) {
     deleteAbsense(event.target.id);
+    function removeAbsenceTable(event) {
+      let row = parseInt(event);
+      // To get rid of references to the original array
+      let arrCopy = [...absenceList];
+      //to return all objects in array that doesnt have id of event.target.id
+      arrCopy = arrCopy.filter((fravær) => fravær.fraværID !== row);
+      //update state
+      setAbsenceList(arrCopy);
+      convertDates(absenceList);
+    }
+    removeAbsenceTable(event.target.id);
   }
   return (
     <>
       <Container className="mt-5">
         <Row>
-          <Col>
+          <Col className="mt-4">
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -123,7 +134,11 @@ function AbsenseTable() {
                       <td>{fravær.fornavn}</td>
                       <td>{fravær.etternavn}</td>
                       <td>
-                        <Button variant="danger" id={fravær.fraværID} onClick={handleClick}>
+                        <Button
+                          variant="danger"
+                          id={fravær.fraværID}
+                          onClick={handleClick}
+                        >
                           Slett
                         </Button>
                       </td>
@@ -134,8 +149,8 @@ function AbsenseTable() {
             </Table>
           </Col>
           <Col sm={6}>
-            <BarChart data={monthCounter}/>
-            <Summary data={monthCounter}/>
+            <BarChart data={monthCounter} />
+            <Summary data={monthCounter} />
           </Col>
         </Row>
       </Container>
