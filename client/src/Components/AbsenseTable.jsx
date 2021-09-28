@@ -23,6 +23,10 @@ function AbsenseTable() {
         return parseInt(string);
       });
     });
+    return monthsInt;
+  };
+
+  function updateMonthsCounterFromArray(monthsInt) {
     // Stage changes før setstate
     let stagedMonths = new Array(12).fill(0);
     //Phew, denne var støgg.. Pusher inn i array monthsCounter som teller hvor mange forekomster det er i hver måned. Prepper datamateriale for chart.
@@ -67,7 +71,7 @@ function AbsenseTable() {
     Axios.get(`http://localhost:3001${location.pathname}`).then((res) => {
       const absense = res.data;
       setAbsenceList(absense);
-      convertDates(absense);
+      updateMonthsCounterFromArray(convertDates(absense));
     });
   }
   // Making the request to get students from db only ONCE. When render is complete. Instead of ComponentDidMount();
@@ -87,15 +91,6 @@ function AbsenseTable() {
         }
       }
     );
-    // console.log("deleting: ", absenseID);
-    // console.log("absenceList looks like: ", absenceList);
-    // let arr = [...absenceList];
-    // console.log("arr var looks like: ", arr)
-    // let index = arr.findIndex(absence => absence.fraværID === fraværID);
-    // console.log("index of absenseID: ", index);
-    // arr.slice(index);
-    // setAbsenceList(arr);
-    // console.log("AbsenceList now looks like: ", absenceList)
   }
 
   function handleClick(event) {
@@ -108,7 +103,8 @@ function AbsenseTable() {
       arrCopy = arrCopy.filter((fravær) => fravær.fraværID !== row);
       //update state
       setAbsenceList(arrCopy);
-      convertDates(absenceList);
+      updateMonthsCounterFromArray(convertDates(arrCopy));
+      
     }
     removeAbsenceTable(event.target.id);
   }
