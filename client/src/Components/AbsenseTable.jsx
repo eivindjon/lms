@@ -33,7 +33,6 @@ function AbsenseTable() {
     let stagedMonths = new Array(12).fill(0);
     //Phew, denne var støgg.. Pusher inn i array monthsCounter som teller hvor mange forekomster det er i hver måned. Prepper datamateriale for chart.
 
-    //TODO: make this its own function
     for (var i = 0; i < monthsInt.length; i++) {
       if (monthsInt[i][1] === 1) {
         stagedMonths[0] += 1;
@@ -75,7 +74,11 @@ function AbsenseTable() {
       const absense = res.data;
       setAbsenceList(absense);
       updateMonthsCounterFromArray(convertDates(absense));
-      setUserName(absense[0].fornavn + " " + absense[0].etternavn)
+      if (absense.length !== 0) {
+        setUserName(absense[0].fornavn + " " + absense[0].etternavn)
+      } else {
+        // TODO: CREATE A FUNCTION THAT PULLS STUDENT NAME FROM DB AND CALLS IT HERE.
+      };
     });
   }
   // Making the request to get students from db only ONCE. When render is complete. Instead of ComponentDidMount();
