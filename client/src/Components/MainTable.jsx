@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { Table, Container, Button } from "react-bootstrap";
+import { Table, Container, Button, Row, Col } from "react-bootstrap";
+
 
 function MainTable() {
   const [studentList, setStudentList] = useState([]);
@@ -40,8 +41,12 @@ function MainTable() {
   }
   return (
     <>
+    
       <Container>
-        <Table striped bordered hover className="mt-5">
+      <h1 className="text-center">Elever i klasse 9E</h1>
+        <Row className="justify-content-md-center">
+          <Col xs={8}>
+        <Table striped bordered hover className="mt-3">
           <thead>
             <tr>
               <th>#</th>
@@ -62,16 +67,21 @@ function MainTable() {
                       id={students.id}
                       onClick={handleClick}
                       disabled={false}
+                      size="sm"
+                      
                     >
                       Borte!
                     </Button>
-                    <Button href={`UserStats/${students.id}`}>Se Fravær</Button>
+                    <Button size="sm" id="sefravær" href={`UserStats/${students.id}`}>Se Fravær</Button>
+                    <Button size="sm" href={`UserStats/addcustom/${students.id}`}>Custom</Button>
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </Table>
+        </Col>
+        </Row>
       </Container>
     </>
   );

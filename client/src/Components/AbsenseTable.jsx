@@ -8,7 +8,9 @@ import Summary from "./Summary";
 function AbsenseTable() {
   const [absenceList, setAbsenceList] = useState([]);
   const [monthCounter, setMonthCounter] = useState(new Array(12).fill(0));
+  const [userName, setUserName] = useState("Unknown user")
   const location = useLocation();
+
 
   //Function to get month part of absense, a part of the dataset prep for the chart on UserStats.
   function convertDates(object) {
@@ -65,6 +67,7 @@ function AbsenseTable() {
     setMonthCounter(stagedMonths);
   }
 
+
   // Gets students from database on load (using useEffect)
   function getStudentAbsense() {
     // Using useLocation() to get path with studentID. This is passed to backend to perform query.
@@ -72,6 +75,7 @@ function AbsenseTable() {
       const absense = res.data;
       setAbsenceList(absense);
       updateMonthsCounterFromArray(convertDates(absense));
+      setUserName(absense[0].fornavn + " " + absense[0].etternavn)
     });
   }
   // Making the request to get students from db only ONCE. When render is complete. Instead of ComponentDidMount();
@@ -111,6 +115,7 @@ function AbsenseTable() {
   return (
     <>
       <Container className="mt-5">
+        <div><h1>Detaljert fravær for {userName}</h1></div>
         <Row>
           <Col className="mt-4">
             <Table striped bordered hover>
@@ -131,7 +136,7 @@ function AbsenseTable() {
                       <td>{fravær.etternavn}</td>
                       <td>
                         <Button
-                          variant="danger"
+                          variant="outline-danger"
                           id={fravær.fraværID}
                           onClick={handleClick}
                         >
