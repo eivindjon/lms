@@ -34,21 +34,38 @@ const BarChart = (props) => {
     ],
   };
   
-  const options = {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            min: 0,
-            max: 10,
-            stepSize: 1,
-            beginAtZero: true,
-          },
-        },
-      ],
-    },
-  };
-  
+  // const options = {
+  //   scales: {
+  //     yAxes: [
+  //       {
+  //         ticks: {
+  //           min: 10,
+  //           max: 10,
+  //           stepSize: 10,
+  //           beginAtZero: true,
+  //         },
+  //       },
+  //     ],
+  //   },
+  // };
+    const options = {
+      scales: {
+          yAxes: [{
+              display: true,
+              gridLines: {
+                  color: "rgb(210,210,211)"
+              },
+              ticks: {
+                  max: 10,
+                  min: 0,
+                  stepSize: 10,
+                  beginAtZero: true,
+                  padding: 20
+                  
+              }
+          }]
+      }
+    }
   return(
     <div>
     <Bar
