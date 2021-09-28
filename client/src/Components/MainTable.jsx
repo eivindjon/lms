@@ -35,6 +35,7 @@ function MainTable() {
 
   function handleClick(event) {
     addToList(event.target.id);
+    //Make this use state and if disabled === true, then remove it from the list, else add to the list again.
     event.target.disabled = true;
   }
   return (
