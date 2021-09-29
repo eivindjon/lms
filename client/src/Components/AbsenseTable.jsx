@@ -78,6 +78,10 @@ function AbsenseTable() {
         setUserName(absense[0].fornavn + " " + absense[0].etternavn)
       } else {
         // TODO: CREATE A FUNCTION THAT PULLS STUDENT NAME FROM DB AND CALLS IT HERE.
+        Axios.get(`http://localhost:3001${location.pathname}/username`).then((res) => {
+          let user = res.data[0].fornavn + " " + res.data[0].etternavn;
+          setUserName(user);
+        })
       };
     });
   }

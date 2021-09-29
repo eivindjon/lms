@@ -25,8 +25,26 @@ app.get("/getstudents", (req, res) => {
   });
 });
 
-//Gets all absense from ONE student.
 
+
+//Gets username
+app.get("/UserStats/:id/username", (req, res) => {
+  var id = req.params.id;
+  console.log("Running query - Getting username for id: ", req.params.id);
+  db.query(
+    "SELECT navn.fornavn, navn.etternavn FROM navn WHERE navn.id = ?;",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+//Gets all absense from ONE student.
 app.get("/UserStats/:id", (req, res) => {
   var id = req.params.id;
   console.log("Running query - Getting absense for student: ", req.params.id);
@@ -42,6 +60,8 @@ app.get("/UserStats/:id", (req, res) => {
     }
   );
 });
+
+
 
 app.post("/post_absent", (req, res) => {
   console.log("Posting Absent: ", req.body.id);
