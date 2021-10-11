@@ -1,5 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import "../App.css";
+import DoughnutSummary from "./DoughnutSummary";
 
 const Summary = (props) => {
   const months = [
@@ -27,43 +29,43 @@ const Summary = (props) => {
     <Container>
       <h3>Antall fraværsdager hittil: {totalAbsent} </h3>
       <Row>
-        <Col>
-          <p>Januar: {mergedMonthsData.Januar}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.Januar} />
         </Col>
-        <Col>
-          <p>Februar: {mergedMonthsData.Februar}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.Februar} />
         </Col>
-        <Col>
-          <p>Mars: {mergedMonthsData.Mars}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.Mars} />
         </Col>
-        <Col>
-          <p>April: {mergedMonthsData.April}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.April} />
         </Col>
-        <Col>
-          <p>Mai: {mergedMonthsData.Mai}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.Mai} />
         </Col>
-        <Col>
-          <p>Juni: {mergedMonthsData.Juni}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.Juni} />
         </Col>
       </Row>
       <Row>
-        <Col>
-          <p>Juli: {mergedMonthsData.Juli}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.Juli} />
         </Col>
-        <Col>
-          <p>August: {mergedMonthsData.August}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.August} />
         </Col>
-        <Col>
-          <p>September: {mergedMonthsData.September}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.September} />
         </Col>
-        <Col>
-          <p>Oktober: {mergedMonthsData.Oktober}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.Oktober} />
         </Col>
-        <Col>
-          <p>November: {mergedMonthsData.November}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.November} />
         </Col>
-        <Col>
-          <p>Desember: {mergedMonthsData.Desember}</p>
+        <Col md={2} className="summary-month">
+          <DoughnutSummary data={mergedMonthsData.Desember} />
         </Col>
       </Row>
     </Container>
