@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Table, Container, Button, Row, Col } from "react-bootstrap";
+import LogCustomModal from "./LogCustomModal";
 
 
 function MainTable() {
@@ -73,7 +74,7 @@ function MainTable() {
                       Borte!
                     </Button>
                     <Button size="sm" id="sefravær" href={`UserStats/${students.id}`}>Se Fravær</Button>
-                    <Button size="sm" href={`UserStats/addcustom/${students.id}`}>Custom</Button>
+                    <LogCustomModal userid={students.id}/>
                   </td>
                 </tr>
               );
