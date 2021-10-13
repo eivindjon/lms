@@ -25,14 +25,12 @@ app.get("/getstudents", (req, res) => {
   });
 });
 
-
-
-//Gets username
+// Gets userName for userStats page
 app.get("/UserStats/:id/username", (req, res) => {
   var id = req.params.id;
-  console.log("Running query - Getting username for id: ", req.params.id);
+  console.log("Running query - Getting username: ", id);
   db.query(
-    "SELECT navn.fornavn, navn.etternavn FROM navn WHERE navn.id = ?;",
+    "SELECT fornavn, etternavn FROM navn WHERE id = ?",
     [id],
     (err, result) => {
       if (err) {
@@ -45,6 +43,7 @@ app.get("/UserStats/:id/username", (req, res) => {
 });
 
 //Gets all absense from ONE student.
+
 app.get("/UserStats/:id", (req, res) => {
   var id = req.params.id;
   console.log("Running query - Getting absense for student: ", req.params.id);
@@ -61,15 +60,13 @@ app.get("/UserStats/:id", (req, res) => {
   );
 });
 
-
-
 app.post("/post_absent", (req, res) => {
   console.log("Posting Absent: ", req.body.id);
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
-
+  // get todays date on format dd-mm-yyyy
   today = dd + "-" + mm + "-" + yyyy;
   const absentStudent = {
     personID: req.body.id,
