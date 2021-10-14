@@ -74,7 +74,7 @@ function MainTable() {
                       Borte!
                     </Button>
                     <Button size="sm" id="sefravær" href={`UserStats/${students.id}`}>Se Fravær</Button>
-                    <LogCustomModal userid={students.id}/>
+                    <LogCustomModal userid={students.id} username={students.fornavn + " " + students.etternavn}/>
                   </td>
                 </tr>
               );

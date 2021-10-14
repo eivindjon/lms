@@ -60,6 +60,7 @@ app.get("/UserStats/:id", (req, res) => {
   );
 });
 
+// Post absent from button in maintable "Borte!"
 app.post("/post_absent", (req, res) => {
   console.log("Posting Absent: ", req.body.id);
   var today = new Date();
@@ -71,6 +72,22 @@ app.post("/post_absent", (req, res) => {
   const absentStudent = {
     personID: req.body.id,
     dato: today,
+  };
+  db.query("INSERT INTO fravær SET ?", absentStudent, (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// Post absent from "egendefinert" in maintable
+app.post("/post_absent_custom", (req, res) => {
+  console.log("Posting Absent: ", req.body.id);
+  const absentStudent = {
+    personID: req.body.id,
+    dato: req.body.dato,
   };
   db.query("INSERT INTO fravær SET ?", absentStudent, (err, result) => {
     if (err) {
