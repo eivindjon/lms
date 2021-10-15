@@ -48,7 +48,7 @@ app.get("/UserStats/:id", (req, res) => {
   var id = req.params.id;
   console.log("Running query - Getting absense for student: ", req.params.id);
   db.query(
-    "SELECT navn.id, navn.fornavn, navn.etternavn, fravær.dato, fravær.fraværID FROM navn, fravær WHERE fravær.personID = ? AND navn.id=? ORDER BY STR_TO_DATE(fravær.dato, '%d-%m-%Y') DESC;",
+    "SELECT navn.id, navn.fornavn, navn.etternavn, fravær.dato, fravær.fraværID FROM navn, fravær WHERE fravær.personID = ? AND navn.id=? ORDER BY STR_TO_DATE(fravær.dato, '%d-%m-%Y') ASC;",
     [id, id],
     (err, result) => {
       if (err) {

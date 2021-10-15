@@ -8,9 +8,8 @@ import Summary from "./Summary";
 function AbsenseTable() {
   const [absenceList, setAbsenceList] = useState([]);
   const [monthCounter, setMonthCounter] = useState(new Array(12).fill(0));
-  const [userName, setUserName] = useState("Unknown user")
+  const [userName, setUserName] = useState("Unknown user");
   const location = useLocation();
-
 
   //Function to get month part of absense, a part of the dataset prep for the chart on UserStats.
   function convertDates(object) {
@@ -26,7 +25,7 @@ function AbsenseTable() {
       });
     });
     return monthsInt;
-  };
+  }
 
   function updateMonthsCounterFromArray(monthsInt) {
     // Stage changes før setstate
@@ -66,7 +65,6 @@ function AbsenseTable() {
     setMonthCounter(stagedMonths);
   }
 
-
   // Gets students from database on load (using useEffect)
   function getStudentAbsense() {
     // Using useLocation() to get path with studentID. This is passed to backend to perform query.
@@ -75,14 +73,16 @@ function AbsenseTable() {
       setAbsenceList(absense);
       updateMonthsCounterFromArray(convertDates(absense));
       if (absense.length !== 0) {
-        setUserName(absense[0].fornavn + " " + absense[0].etternavn)
+        setUserName(absense[0].fornavn + " " + absense[0].etternavn);
       } else {
         // TODO: CREATE A FUNCTION THAT PULLS STUDENT NAME FROM DB AND CALLS IT HERE.
-        Axios.get(`http://localhost:3001${location.pathname}/username`).then((res) => {
-          let user = res.data[0].fornavn + " " + res.data[0].etternavn;
-          setUserName(user);
-        })
-      };
+        Axios.get(`http://localhost:3001${location.pathname}/username`).then(
+          (res) => {
+            let user = res.data[0].fornavn + " " + res.data[0].etternavn;
+            setUserName(user);
+          }
+        );
+      }
     });
   }
   // Making the request to get students from db only ONCE. When render is complete. Instead of ComponentDidMount();
@@ -115,14 +115,15 @@ function AbsenseTable() {
       //update state
       setAbsenceList(arrCopy);
       updateMonthsCounterFromArray(convertDates(arrCopy));
-      
     }
     removeAbsenceTable(event.target.id);
   }
   return (
     <>
       <Container className="mt-5">
-        <div><h1>Detaljert fravær for {userName}</h1></div>
+        <div>
+          <h1>Detaljert fravær for {userName}</h1>
+        </div>
         <Row>
           <Col className="mt-4">
             <Table striped bordered hover>

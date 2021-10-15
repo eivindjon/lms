@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { Table, Container, Button, Row, Col } from "react-bootstrap";
+import { Table, Container, Button, Row, Col, Card } from "react-bootstrap";
 import LogCustomModal from "./LogCustomModal";
-
+import MainPageCard from "./MainPageCard";
 
 function MainTable() {
   const [studentList, setStudentList] = useState([]);
-  //const [absenceList, setAbsenceList] = useState([]);
 
   // Gets students from database on load (using useEffect)
   function getStudents() {
@@ -42,46 +41,57 @@ function MainTable() {
   }
   return (
     <>
-    
       <Container>
-      <h1 className="text-center">Elever i klasse 9E</h1>
-        <Row className="justify-content-md-center">
-          <Col xs={8}>
-        <Table striped bordered hover className="mt-3">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Fornavn</th>
-              <th>Etternavn</th>
-              <th>Valg</th>
-            </tr>
-          </thead>
-          <tbody>
-            {studentList.map((students) => {
-              return (
-                <tr key={students.id}>
-                  <td>{students.id}</td>
-                  <td>{students.fornavn}</td>
-                  <td>{students.etternavn}</td>
-                  <td>
-                    <Button
-                      id={students.id}
-                      onClick={handleClick}
-                      disabled={false}
-                      size="sm"
-                      
-                    >
-                      Borte!
-                    </Button>
-                    <Button size="sm" id="sefravær" href={`UserStats/${students.id}`}>Se Fravær</Button>
-                    <LogCustomModal userid={students.id} username={students.fornavn + " " + students.etternavn}/>
-                  </td>
+        <h1 className="text-center">God dag "user"</h1>
+
+        <Row className="justify-content-md-center mt-5">
+          <Col md={6}>
+            <MainPageCard />
+          </Col>
+          <Col md={6}>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Fornavn</th>
+                  <th>Etternavn</th>
+                  <th>Valg</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </Table>
-        </Col>
+              </thead>
+              <tbody>
+                {studentList.map((students) => {
+                  return (
+                    <tr key={students.id}>
+                      <td>{students.id}</td>
+                      <td>{students.fornavn}</td>
+                      <td>{students.etternavn}</td>
+                      <td>
+                        <Button
+                          id={students.id}
+                          onClick={handleClick}
+                          disabled={false}
+                          size="sm"
+                        >
+                          Borte!
+                        </Button>
+                        <Button
+                          size="sm"
+                          id="sefravær"
+                          href={`UserStats/${students.id}`}
+                        >
+                          Se Fravær
+                        </Button>
+                        <LogCustomModal
+                          userid={students.id}
+                          username={students.fornavn + " " + students.etternavn}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Col>
         </Row>
       </Container>
     </>

@@ -13,7 +13,7 @@ const MyNavbar = () => {
             className="d-inline-block align-top"
             id="nav-logo"
           />{" "}
-          Fraværsføring 9E
+          Elevoversikt
         </Navbar.Brand>
       </Container>
     </Navbar>
