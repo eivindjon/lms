@@ -14,9 +14,14 @@ function MainPageCard(props) {
     <Card>
       <Card.Header as="h5">{todayCap}</Card.Header>
       <Card.Body>
-        <Card.Title>Special title treatment</Card.Title>
+        <Card.Title>Dagsoversikt</Card.Title>
         <Card.Text>
-          With supporting text below as a natural lead-in to additional content.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam fugit
+          sint minima ipsum iure totam necessitatibus! Eveniet natus recusandae
+          itaque ipsam officia fugit molestiae deleniti. Adipisci excepturi iure
+          veritatis nemo molestias blanditiis, commodi veniam ipsum qui rerum
+          odio perspiciatis nihil cum libero explicabo voluptas porro odit, id,
+          dolorum hic aliquid.
         </Card.Text>
         <Button variant="primary">Go somewhere</Button>
       </Card.Body>

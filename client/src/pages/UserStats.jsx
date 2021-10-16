@@ -7,7 +7,7 @@ function UserStats() {
   return (
     <div>
       <MyNavbar />
-      <NavigationCrumb refs={pathname} />
+      <NavigationCrumb />
       <AbsenseTable />
     </div>
   );

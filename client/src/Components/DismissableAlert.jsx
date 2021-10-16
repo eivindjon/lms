@@ -1,23 +1,30 @@
 import React from "react";
-import { useState } from "react";
-import { Button, Alert } from "react-bootstrap";
+import { useState, useImperativeHandle, forwardRef, useEffect } from "react";
+import { Alert, Fade, Collapse } from "react-bootstrap";
 
-function AlertDismissibleExample(props) {
-  const [show, setShow] = useState(true);
+const DismissableAlert = forwardRef((props, ref) => {
+  const [alert, setAlert] = useState(false);
+  useImperativeHandle(ref, () => ({
+    showAlert() {
+      setAlert(true);
+      // Make alert disappear after 2 seconds.
+      const timer = setTimeout(() => {
+        setAlert(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    },
+  }));
 
-  if (show) {
+  if (alert) {
     return (
-      <Alert variant="success" onClose={() => setShow(false)} dismissible>
-        <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
-        <p>
-          Change this and that and try again. Duis mollis, est non commodo
-          luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
-          Cras mattis consectetur purus sit amet fermentum.
-        </p>
-      </Alert>
+      <Fade in={alert}>
+        <Alert variant="success" onClose={() => setAlert(false)}>
+          <p>Fravær lagret! Flink bisk.</p>
+        </Alert>
+      </Fade>
     );
   }
-  return <Button onClick={() => setShow(true)}>Show Alert</Button>;
-}
+  return <></>;
+});
 
-render(<AlertDismissibleExample />);
+export default DismissableAlert;
