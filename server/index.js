@@ -2,6 +2,74 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const app = express();
+const { google } = require("googleapis");
+
+const { OAuth2 } = google.auth;
+
+const oAuth2Client = new OAuth2(
+  "603651358266-2g6u8hmfsj5p9cnennbo9ri8q466k5sk.apps.googleusercontent.com",
+  "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"
+);
+
+oAuth2Client.setCredentials({
+  refresh_token:
+    "1//04LrMoZ1pra_GCgYIARAAGAQSNwF-L9IrhMw9ngmVZ9qLa6hVvs6Q-Qo4sG2dMVzvPZJjoC1cmSHlURfCNgL5ySc9teJm9PnnTe0",
+});
+
+//------------TODO---------------//
+
+// SET UP GET REQUEST FROM FRONT PAGE TO PULL CAL EVENTS.
+// FIX TIMERANGE. START DATE AND END DATE.
+
+const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
+
+let eventStartTime = new Date();
+eventStartTime.setDate(eventStartTime.getDay() + 2);
+
+let eventEndTime = new Date();
+eventEndTime.setDate(eventEndTime.getDay() + 2);
+eventEndTime.setMinutes(eventEndTime.getMinutes() + 45);
+
+const event = {
+  summary: "Matematikk 8D",
+  location: "....",
+  description: "Jobbe videre med onenote. Minecraft.. sjekk ",
+  start: {
+    dateTime: eventStartTime,
+    timeZone: "Europe/Oslo",
+  },
+  end: {
+    dateTime: eventEndTime,
+    timeZone: "Europe/Oslo",
+  },
+  colorId: 1,
+};
+
+calendar.freebusy.query(
+  {
+    resource: {
+      timeMin: eventStartTime,
+      timeMax: eventEndTime,
+      timeZone: "Europe/Oslo",
+      items: [{ id: "primary" }],
+    },
+  },
+  (err, res) => {
+    if (err) return console.log("Freebusy error: ", err);
+    const eventsArray = res.data.calendars.primary.busy;
+
+    if (eventsArray.length === 0)
+      return calendar.events.insert(
+        { calendarId: "primary", resource: event },
+        (err) => {
+          if (err) return console.log("Calendar event creation error: ", err);
+
+          return console.log("calendar event created.");
+        }
+      );
+    return console.log("Im busy");
+  }
+);
 
 app.use(cors());
 app.use(express.json());
