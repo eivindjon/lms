@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useRef, useImperativeHandle, forwardRef } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Form, Modal, Fade } from "react-bootstrap";
 import Axios from "axios";
 import DatePicker from "./DatePicker";
 import DismissableAlert from "./DismissableAlert";
@@ -58,7 +58,7 @@ function LogCustomModal(props) {
       </Button>
 
       <Modal show={show} onHide={handleClose}>
-        <DismissableAlert ref={childRef} />
+        <DismissableAlert ref={childRef} in={Fade} />
         <Modal.Header closeButton>
           <Modal.Title>Logg nytt fravær for {username}</Modal.Title>
         </Modal.Header>
