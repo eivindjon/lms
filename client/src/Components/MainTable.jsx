@@ -6,6 +6,7 @@ import MainPageCard from "./MainPageCard";
 
 function MainTable() {
   const [studentList, setStudentList] = useState([]);
+  const [day, setDay] = useState(new Date());
 
   // Gets students from database on load (using useEffect)
   function getStudents() {
@@ -17,6 +18,7 @@ function MainTable() {
   // Making the request to get students from db only ONCE. When render is complete. Instead of ComponentDidMount();
   useEffect(() => {
     getStudents();
+    //getLessons();
     // eslint-disable-next-line
   }, []);
 
@@ -42,7 +44,7 @@ function MainTable() {
   return (
     <>
       <Container>
-        <h1 className="text-center">God dag "user"</h1>
+        <h1 className="text-center mb-5 mt-5">God dag "user"</h1>
 
         <Row className="justify-content-md-center mt-5">
           <Col md={6}>
