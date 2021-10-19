@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 
 function MainPageCard(props) {
@@ -8,11 +8,15 @@ function MainPageCard(props) {
     month: "2-digit",
     day: "numeric",
   };
-  const today = new Date().toLocaleDateString("nb-NO", options);
-  const todayCap = today.charAt(0).toUpperCase() + today.slice(1);
+  const [day, setDay] = useState(new Date().toLocaleDateString("nb-NO", options));
+  
+  let dayCap = day.charAt(0).toUpperCase() + day.slice(1)
+  
+  
+ 
   return (
     <Card>
-      <Card.Header as="h5">{todayCap}</Card.Header>
+      <Card.Header as="h5">{dayCap}</Card.Header>
       <Card.Body>
         <Card.Title>Dagsoversikt</Card.Title>
         <Card.Text>

@@ -14,3 +14,8 @@
 .summary-month {
   min-height: 4em;
 }
+
+
+#success-dismissable {
+  max-height: 2em;
+}
