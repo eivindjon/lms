@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useImperativeHandle, forwardRef, useEffect } from "react";
-import { Alert, Fade, Collapse } from "react-bootstrap";
+import { Alert, Fade } from "react-bootstrap";
 import "../App.css";
 
 const DismissableAlert = forwardRef((props, ref) => {
@@ -18,11 +18,9 @@ const DismissableAlert = forwardRef((props, ref) => {
 
   if (alert) {
     return (
-      <Collapse>
-        <Alert variant="success" id="success-dismissable" onClose={() => setAlert(false)}>
-          <p>Fravær lagret! Flink bisk.</p>
+        <Alert variant="success" id="success-dismissable" dismissible onClose={() => setAlert(false)}>
+          Fravær lagret! Flink bisk.
         </Alert>
-      </Collapse>
     );
   }
   return <></>;
