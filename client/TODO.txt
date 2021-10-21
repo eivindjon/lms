@@ -1,10 +1,7 @@
-// NAVBAR
-    // LINKS
+// const [weekday setWeekday] = useState("unknown")
 
 
-// TABLE
- //TABLE STRUCTURE
- //GET REQUEST - SQL QUERY
 
-// FOOTER
-s
+if (Weekday==="given day") {return (
+    <lessontemplate 
+)}

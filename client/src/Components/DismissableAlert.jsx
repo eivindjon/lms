@@ -1,6 +1,6 @@
 import React from "react";
-import { useState, useImperativeHandle, forwardRef, useEffect } from "react";
-import { Alert, Fade } from "react-bootstrap";
+import { useState, useImperativeHandle, forwardRef } from "react";
+import { Alert } from "react-bootstrap";
 import "../App.css";
 
 const DismissableAlert = forwardRef((props, ref) => {

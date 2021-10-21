@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { Table, Container, Button, Row, Col, Card } from "react-bootstrap";
+import { Table, Container, Button, Row, Col } from "react-bootstrap";
 import LogCustomModal from "./LogCustomModal";
 import MainPageCard from "./MainPageCard";
 
 function MainTable() {
   const [studentList, setStudentList] = useState([]);
-  const [day, setDay] = useState(new Date());
+  //const [day, setDay] = useState(new Date());
 
   // Gets students from database on load (using useEffect)
   function getStudents() {
@@ -22,13 +22,13 @@ function MainTable() {
     // eslint-disable-next-line
   }, []);
 
-  // poster dobbelt når man refresher osv.. Vet ikke helt hva som skjer her. Tror jeg må fikse noe med .then funksjonen. Legge inn en if res = 200 ->all good eller no.
-  function addToList(studentId) {
-    const absentStudent = { id: studentId };
+ 
+  function addToList(studentID) {
+    const absentStudent = { id: studentID };
     Axios.post(`http://localhost:3001/post_absent`, absentStudent).then(
       (res) => {
         if (res.status === 200) {
-          console.log("Absence logged", studentId);
+          console.log("Absence logged", studentID);
         } else if (res.status === 400) {
           console.log("No good status");
         }
@@ -63,13 +63,13 @@ function MainTable() {
               <tbody>
                 {studentList.map((students) => {
                   return (
-                    <tr key={students.id}>
-                      <td>{students.id}</td>
-                      <td>{students.fornavn}</td>
-                      <td>{students.etternavn}</td>
+                    <tr key={students.studentID}>
+                      <td>{students.studentID}</td>
+                      <td>{students.firstName}</td>
+                      <td>{students.lastName}</td>
                       <td>
                         <Button
-                          id={students.id}
+                          id={students.studentID}
                           onClick={handleClick}
                           disabled={false}
                           size="sm"
@@ -79,13 +79,13 @@ function MainTable() {
                         <Button
                           size="sm"
                           id="sefravær"
-                          href={`UserStats/${students.id}`}
+                          href={`UserStats/${students.studentID}`}
                         >
                           Se Fravær
                         </Button>
                         <LogCustomModal
-                          userid={students.id}
-                          username={students.fornavn + " " + students.etternavn}
+                          userid={students.studentID}
+                          username={students.firstName + " " + students.lastName}
                         />
                       </td>
                     </tr>

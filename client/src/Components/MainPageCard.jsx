@@ -1,33 +1,68 @@
 import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
+import { ArrowRight, ArrowLeft } from "react-bootstrap-icons";
 
 function MainPageCard(props) {
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "2-digit",
-    day: "numeric",
+  const [day, setDay] = useState(new Date());
+  const [weekday, setWeekday] = useState("Unknown");
+
+  const capper = (date) => {
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "2-digit",
+      day: "numeric",
+    };
+    let toString = date.toLocaleDateString("nb-NO", options);
+    let capitals = toString.charAt(0).toUpperCase() + toString.slice(1);
+    return capitals;
   };
-  const [day, setDay] = useState(new Date().toLocaleDateString("nb-NO", options));
-  
-  let dayCap = day.charAt(0).toUpperCase() + day.slice(1)
-  
-  
- 
+
+  const addDays = (date, days) => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
+
+  const subDays = (date, days) => {
+    const result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+  };
+
+  const handleClickNext = () => {
+    console.log("Nextday");
+    setDay(addDays(day, 1));
+  };
+
+  const handleClickPrev = () => {
+    console.log("Prevday");
+    setDay(subDays(day, 1));
+  };
+
   return (
     <Card>
-      <Card.Header as="h5">{dayCap}</Card.Header>
+      <Card.Header as="h5">
+        {capper(day)}
+        <div className="float-end">
+          <Button  onClick={handleClickPrev}>
+            <ArrowLeft/>
+          </Button>
+          <Button className="ms-2" onClick={handleClickNext}><ArrowRight/>
+          </Button>
+        </div>
+      </Card.Header>
       <Card.Body>
-        <Card.Title>Dagsoversikt</Card.Title>
-        <Card.Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam fugit
-          sint minima ipsum iure totam necessitatibus! Eveniet natus recusandae
-          itaque ipsam officia fugit molestiae deleniti. Adipisci excepturi iure
-          veritatis nemo molestias blanditiis, commodi veniam ipsum qui rerum
-          odio perspiciatis nihil cum libero explicabo voluptas porro odit, id,
-          dolorum hic aliquid.
-        </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <Card variant="success">
+          <Card.Header as="h7">
+            Samfunnsfag
+          </Card.Header>
+          <Card.Body>
+              <Card.Text>
+                YOYOYO
+              </Card.Text>
+            </Card.Body>
+        </Card>
       </Card.Body>
     </Card>
   );

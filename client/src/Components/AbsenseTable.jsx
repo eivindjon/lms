@@ -16,7 +16,7 @@ function AbsenseTable() {
     const dates = object;
     let months = [];
     // Splits dates object into array of strings
-    dates.forEach((date) => months.push(date.dato.split("-")));
+    dates.forEach((date) => months.push(date.date.split("-")));
 
     //Double map for å komme inn i subarray [[],[]] og konvertere disse til INT.
     var monthsInt = months.map(function (subarray) {
@@ -65,20 +65,20 @@ function AbsenseTable() {
     setMonthCounter(stagedMonths);
   }
 
-  // Gets students from database on load (using useEffect)
-  function getStudentAbsense() {
+  // Gets absence from database on load (using useEffect)
+  function getStudentAbsence() {
     // Using useLocation() to get path with studentID. This is passed to backend to perform query.
     Axios.get(`http://localhost:3001${location.pathname}`).then((res) => {
-      const absense = res.data;
-      setAbsenceList(absense);
-      updateMonthsCounterFromArray(convertDates(absense));
-      if (absense.length !== 0) {
-        setUserName(absense[0].fornavn + " " + absense[0].etternavn);
+      const absence = res.data;
+      setAbsenceList(absence);
+      updateMonthsCounterFromArray(convertDates(absence));
+      if (absence.length !== 0) {
+        setUserName(absence[0].firstName + " " + absence[0].lastName);
       } else {
         // TODO: CREATE A FUNCTION THAT PULLS STUDENT NAME FROM DB AND CALLS IT HERE.
         Axios.get(`http://localhost:3001${location.pathname}/username`).then(
           (res) => {
-            let user = res.data[0].fornavn + " " + res.data[0].etternavn;
+            let user = res.data[0].firstName + " " + res.data[0].lastName;
             setUserName(user);
           }
         );
@@ -87,16 +87,16 @@ function AbsenseTable() {
   }
   // Making the request to get students from db only ONCE. When render is complete. Instead of ComponentDidMount();
   useEffect(() => {
-    getStudentAbsense();
+    getStudentAbsence();
     // eslint-disable-next-line
   }, []);
 
-  function deleteAbsense(absenseID) {
-    const deleteAbsense = { fraværID: absenseID };
-    Axios.post(`http://localhost:3001/delete_absense`, deleteAbsense).then(
+  function deleteAbsense(absenceID) {
+    const deleteAbsence = { absenceID: absenceID };
+    Axios.post(`http://localhost:3001/delete_absense`, deleteAbsence).then(
       (res) => {
         if (res.status === 200) {
-          console.log("deleted", absenseID);
+          console.log("deleted", absenceID);
         } else if (res.status === 400) {
           console.log("No good status");
         }
@@ -111,12 +111,24 @@ function AbsenseTable() {
       // To get rid of references to the original array
       let arrCopy = [...absenceList];
       //to return all objects in array that doesnt have id of event.target.id
-      arrCopy = arrCopy.filter((fravær) => fravær.fraværID !== row);
+      arrCopy = arrCopy.filter((absence) => absence.absenceID !== row);
       //update state
       setAbsenceList(arrCopy);
       updateMonthsCounterFromArray(convertDates(arrCopy));
     }
     removeAbsenceTable(event.target.id);
+  }
+
+  // Formats returned values from MySQL query string to dd/mm/yyyy format.
+  const parseDate = (dateString) => {
+    const date = new Date(dateString);
+    var formatOptions = { 
+           day:    '2-digit', 
+           month:  '2-digit', 
+           year:   'numeric',
+    };
+    let dateStringParsed = date.toLocaleDateString('en-GB', formatOptions);
+    return dateStringParsed;
   }
   return (
     <>
@@ -136,16 +148,16 @@ function AbsenseTable() {
                 </tr>
               </thead>
               <tbody>
-                {absenceList.map((fravær) => {
+                {absenceList.map((absence) => {
                   return (
-                    <tr key={fravær.fraværID}>
-                      <td>{fravær.dato}</td>
-                      <td>{fravær.fornavn}</td>
-                      <td>{fravær.etternavn}</td>
+                    <tr key={absence.absenceID}>
+                      <td>{parseDate(absence.date)}</td>
+                      <td>{absence.firstName}</td>
+                      <td>{absence.lastName}</td>
                       <td>
                         <Button
                           variant="outline-danger"
-                          id={fravær.fraværID}
+                          id={absence.absenceID}
                           onClick={handleClick}
                         >
                           Slett

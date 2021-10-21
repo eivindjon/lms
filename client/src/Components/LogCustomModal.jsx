@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useRef, useImperativeHandle, forwardRef } from "react";
+import { useState, useRef } from "react";
 import { Button, Form, Modal, Fade } from "react-bootstrap";
 import Axios from "axios";
 import DatePicker from "./DatePicker";
@@ -16,10 +16,10 @@ function LogCustomModal(props) {
 
   function addCustom(studentId, date) {
     const absentStudent = {
-      id: studentId,
-      dato: date,
+      student_studentID: studentId,
+      date: date,
     };
-    // TODO Create server route to post custom absent students
+    
     Axios.post(`http://localhost:3001/post_absent_custom`, absentStudent).then(
       (res) => {
         if (res.status === 200) {
@@ -33,17 +33,10 @@ function LogCustomModal(props) {
   // Gets value from datepicker child component
   function getDate(value) {
     // Convert Date value to string accepted in DB: dd
-    const norskTid = Intl.DateTimeFormat("en-GB").format(value);
-    const norskTidString = norskTid
-      .toLocaleString("en-GB", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      })
-      .split("/")
-      .join("-");
-
+    const norskTid = Intl.DateTimeFormat("en-CA").format(value);
+    const norskTidString = norskTid.toLocaleString('en-CA') 
     setpickDate(norskTidString);
+
   }
 
   function handleClick(e) {
