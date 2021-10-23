@@ -1,7 +1,12 @@
-// const [weekday setWeekday] = useState("unknown")
+// 
 
+Lage et semester med gitt timeplan. En forms med 
+-   Fagnavn
+-   Starttidspunkt MySQL datetime format.
+-   Sliutttidspunkt MySQL datetime format.
+-   StartDato semester
+-   SluttDato semester.
 
+Insert records into database.
+ASync function for dette. Kan ta tid. Mens den loader spinner hjulet.
 
-if (Weekday==="given day") {return (
-    <lessontemplate 
-)}
