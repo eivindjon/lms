@@ -104,6 +104,35 @@ app.post("/delete_absense", (req, res) => {
   });
 });
 
+app.get("/getlessons/:date", (req, res) => {
+  var date = req.params.date;
+  console.log("Running query - Getting lessons for date: ", req.params.date);
+  db.query(
+    "SELECT * FROM lesson WHERE date = ?;",
+    [id, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+
+// app.post("/getlessons:date" , (req, res) => {
+//   console.log("getting lessons..")
+//   Req is an object on format {
+//     lessonID: 12,
+//     description: "This",
+//     date: 
+         
+
+//   db.query("INSERT INTO lesson (lessonID, description, date, startTime, endTime, note, Subject_subjectID, class_classID) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);")
+// })
+
+
 app.listen(3001, () => {
   console.log("Server listening on port 3001");
 });

@@ -15,18 +15,23 @@ DENNE FINNER FORRIGE DATO. Skal brukes for å lage insertquery.
 const startTime = new Date()
 const endTime = new Date('2021-12-17')
 
-function insertQuery(start, end, weekday) {
-  console.log(start.getDay());
+function insertQuery(start, end) {
+  
   console.log(start.toLocaleString("en-CA").substr(0,10))
-  const difference = Math.abs(start.getDay()- weekday);
+  const difference = Math.abs(start.getDay()- 2);
   if (start.getDay() === 2) {
   	
     console.log(start.toLocaleString("en-CA").substr(0,10))
   } else {
-		start.setDate(start.getDate()- difference );
-    console.log(start.toLocaleString("en-CA").substr(0,10))
+		let startDate = start.setDate(start.getDate()- difference );
+    while (start < end) {
+    	console.log(start.toLocaleString("en-CA").substr(0,10))
+      start.setDate(start.getDate() + 7);
+    }
+    
   }
 
 }
 
 insertQuery(startTime, endTime);
+
