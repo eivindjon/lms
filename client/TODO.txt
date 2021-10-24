@@ -1,5 +1,12 @@
 // 
 
+Rydde opp i backend:
+-   Dele opp og strukturere.
+-   En del for routes.
+-   En del for logic og functions?
+-   Research hvordan dette funker. Kan du spørre noen?
+
+
 Lage et semester med gitt timeplan. En forms med 
 -   Fagnavn
 -   Starttidspunkt MySQL datetime format.
@@ -8,30 +15,50 @@ Lage et semester med gitt timeplan. En forms med
 -   SluttDato semester.
 
 Insert records into database.
-ASync function for dette. Kan ta tid. Mens den loader spinner hjulet.
+ASync function for dette? Kan ta tid. Mens den loader spinner hjulet.
 
-DENNE FINNER FORRIGE DATO. Skal brukes for å lage insertquery.
+const startU = getLastWeekday(2)
+const endU = new Date('2021-12-17')
 
-const startTime = new Date()
-const endTime = new Date('2021-12-17')
+// Modified from https://stackoverflow.com/questions/33078406/getting-the-date-of-next-monday. Function that returns date object of last occurence of a given weekday. (used as start param in insertQuery function.)
+function getLastWeekday(weekday) {
+  const now = new Date()
+  const today = new Date(now)
+  today.setMilliseconds(0)
+  today.setSeconds(0)
+  today.setMinutes(0)
+  today.setHours(0)
 
-function insertQuery(start, end) {
-  
-  console.log(start.toLocaleString("en-CA").substr(0,10))
-  const difference = Math.abs(start.getDay()- 2);
-  if (start.getDay() === 2) {
-  	
-    console.log(start.toLocaleString("en-CA").substr(0,10))
-  } else {
-		let startDate = start.setDate(start.getDate()- difference );
-    while (start < end) {
-    	console.log(start.toLocaleString("en-CA").substr(0,10))
-      start.setDate(start.getDate() + 7);
-    }
-    
-  }
+  const lastWeekday = new Date(today)
 
+  do {
+    lastWeekday.setDate(lastWeekday.getDate() - 1) // Adding 1 day
+  } while (lastWeekday.getDay() !== weekday)
+
+  return lastWeekday
 }
 
-insertQuery(startTime, endTime);
+// Takes paramaters start and end. Both are date objects where start is first day of semester. End is end of semester. Returns MySQL query formatted for insert into lesson table. These will be placeholders to render in client.
+function insertQuery(start, end) {
+  	let theArray = [];
+    
+    while (start < end) {
+    	let subquery = []
+      let description = "Ser ut som du ikke har planlagt noe her enda..."
+    	let date = start.toLocaleString("en-CA").substr(0,10);
+      let startTime = "08:15:00";
+      let endTime = "10:00:00";
+      let note = "Ingen notater..."
+      let subject_subjectID = 2;
+      let class_classID = 1;
+      subquery.push(description, date, startTime, endTime, note, subject_subjectID, class_classID);
+      console.log("Subquery looks like: ", subquery)
+      theArray.push(subquery);
+      start.setDate(start.getDate() + 7);
+    }
+    console.log("The query array:", theArray);
+  
 
+}
+//Nested arrays are turned into grouped lists (for bulk inserts), //e.g. [['a', 'b'], ['c', 'd']] turns into ('a', 'b'), ('c', 'd')
+insertQuery(startU, endU);
