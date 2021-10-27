@@ -50,10 +50,8 @@ function CreateSubjectPlan() {
       <Container className="mt-5">
         <Row className="justify-content-md-center">
           <Col md={8}>
-            <DatePicker onChange={getStartDate} />
-            <DatePicker onChange={getEndDate} />
-            <TimePicker onChange={getStartTime} />
-            <TimePicker onChange={getEndTime} />
+
+
             <Button onClick={log} className="mt-3">
               Log values
             </Button>
@@ -61,6 +59,7 @@ function CreateSubjectPlan() {
             <Form>
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="formGridEmail">
+                <Form.Label>Fag</Form.Label>
                   <Form.Select aria-label="Velg fag" onChange={(e) => setSubject_subjectID(e.target.value)}>
                     <option>Velg fag</option>
                     <option value="1">Matematikk</option>
@@ -69,49 +68,43 @@ function CreateSubjectPlan() {
                     <option value="4">Fysak</option>
                   </Form.Select>
                 </Form.Group>
-
-                <Form.Group as={Col} controlId="formGridPassword">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" placeholder="Password" />
-                </Form.Group>
               </Row>
 
-              <Form.Group className="mb-3" controlId="formGridAddress1">
-                <Form.Label>Address</Form.Label>
-                <Form.Control placeholder="1234 Main St" />
+              <Row>
+              <Form.Group as={Col} className="mb-3" >
+                <Form.Label>Timen begynner..</Form.Label>
+                <TimePicker onChange={getStartTime} />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formGridAddress2">
-                <Form.Label>Address 2</Form.Label>
-                <Form.Control placeholder="Apartment, studio, or floor" />
+              <Form.Group as={Col} className="mb-3" >
+                <Form.Label>Timen slutter..</Form.Label>
+                <TimePicker onChange={getEndTime} />
               </Form.Group>
+              </Row>
 
               <Row className="mb-3">
-                <Form.Group as={Col} controlId="formGridCity">
-                  <Form.Label>City</Form.Label>
-                  <Form.Control />
+                <Form.Group as={Col} >
+                  <Form.Label>Semesterstart</Form.Label>
+                  <DatePicker onChange={getStartDate} />
+
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridState">
-                  <Form.Label>State</Form.Label>
-                  <Form.Select defaultValue="Choose...">
-                    <option>Choose...</option>
-                    <option>...</option>
-                  </Form.Select>
+                  <Form.Label>Semesterslutt</Form.Label>
+                  <DatePicker onChange={getEndDate} />
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridZip">
-                  <Form.Label>Zip</Form.Label>
-                  <Form.Control />
-                </Form.Group>
               </Row>
-
-              <Form.Group className="mb-3" id="formGridCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
-              </Form.Group>
+              <Form.Label htmlFor="exampleColorInput">Color picker</Form.Label>
+                <Form.Control
+                type="color"
+                id="exampleColorInput"
+                defaultValue="#563d7c"
+                title="Choose your color"
+                />
 
               <Button variant="primary" type="submit">
-                Submit
+                Legg Til Fag
               </Button>
             </Form>
           </Col>
