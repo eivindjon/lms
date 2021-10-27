@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Container } from "react-bootstrap";
+import { Navbar, Container, Nav } from "react-bootstrap";
 import logo from "../Assets/img/logo.png";
 
 const MyNavbar = () => {
@@ -15,6 +15,10 @@ const MyNavbar = () => {
           />{" "}
           Elevoversikt
         </Navbar.Brand>
+        <Nav className="me-auto">
+          <Nav.Link href="/Timeplan">Timeplan</Nav.Link>
+
+        </Nav>
       </Container>
     </Navbar>
   );

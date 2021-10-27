@@ -83,6 +83,7 @@ function MainPageCard(props) {
       ).then((res) => {
         const result = res;
           setLessons(result);
+          if (res.length < 1) { console.log("No lessons found!") }
         }
       );
     }

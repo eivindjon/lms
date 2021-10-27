@@ -109,11 +109,12 @@ app.get("/getlessons/:date", (req, res) => {
   console.log("Running query - Getting lessons for date: ", req.params.date);
   db.query(
     "SELECT * FROM lesson WHERE date = ?;",
-    [id, id],
+    [date],
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
+        console.log(result);
         res.send(result);
       }
     }
