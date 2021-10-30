@@ -44,6 +44,12 @@ function MainPageCard(props) {
     setWeekday(result.getDay());
     return result;
   };
+  
+/*   const addHours = (date, hours) => {
+    const result = new Date(date);
+    result.setTime(result.getTime()+ hours);
+    return result;
+  } */
 
   const subDays = (date, days) => {
     const result = new Date(date);
@@ -81,8 +87,9 @@ function MainPageCard(props) {
           .toLocaleString("en-CA")
           .substr(0, 10)}`
       ).then((res) => {
-        const result = res;
+        const result = res.data;
           setLessons(result);
+          console.log(result)
           if (res.length < 1) { console.log("No lessons found!") }
         }
       );
@@ -109,9 +116,30 @@ function MainPageCard(props) {
         </div>
       </Card.Header>
       <Card.Body>
-        
-        {/* map the lessons into each its own cards. */}
-        {/* <LessonCard subject={lesson.subject} description={lesson.description} notes={lesson.notes}/> */}
+      {lessons.map((lesson) => {
+            let style = {
+              width: '18rem',
+              backgroundColor: lesson.color
+            };
+            return (
+              <Card style={style}>
+                <Card.Body>
+                  <Card.Title>{lesson.subject}</Card.Title>
+                  <Card.Subtitle className="mb-2 text-muted">{lesson.className}</Card.Subtitle>
+                  <Card.Text>
+                    {lesson.description}
+                  </Card.Text>
+
+                </Card.Body>
+                <Card.Footer>
+                <Card.Text>
+                    {lesson.note}
+                  </Card.Text>
+                </Card.Footer>
+              </Card>
+             )
+            })}
+          
       </Card.Body>
     </Card>
   );

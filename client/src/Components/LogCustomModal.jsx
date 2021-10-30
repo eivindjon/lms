@@ -4,6 +4,7 @@ import { Button, Form, Modal, Fade } from "react-bootstrap";
 import Axios from "axios";
 import DatePicker from "./DatePicker";
 import DismissableAlert from "./DismissableAlert";
+import { CalendarRange } from "react-bootstrap-icons";
 
 function LogCustomModal(props) {
   const [show, setShow] = useState(false);
@@ -46,8 +47,8 @@ function LogCustomModal(props) {
 
   return (
     <>
-      <Button size="sm" variant="primary" onClick={handleShow}>
-        Egendefinert tidsrom
+      <Button size="sm" variant="primary" onClick={handleShow} className="mb-2">
+        <CalendarRange/> Egendefinert
       </Button>
 
       <Modal show={show} onHide={handleClose}>

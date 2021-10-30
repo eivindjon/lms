@@ -3,6 +3,7 @@ import Axios from "axios";
 import { Table, Container, Button, Row, Col } from "react-bootstrap";
 import LogCustomModal from "./LogCustomModal";
 import MainPageCard from "./MainPageCard";
+import { BarChart } from "react-bootstrap-icons";
 
 function MainTable() {
   const [studentList, setStudentList] = useState([]);
@@ -73,6 +74,7 @@ function MainTable() {
                           onClick={handleClick}
                           disabled={false}
                           size="sm"
+                          className="mb-2"
                         >
                           Borte!
                         </Button>
@@ -80,8 +82,9 @@ function MainTable() {
                           size="sm"
                           id="sefravær"
                           href={`UserStats/${students.studentID}`}
+                          className="mb-2"
                         >
-                          Se Fravær
+                          <BarChart/> Se Fravær
                         </Button>
                         <LogCustomModal
                           userid={students.studentID}

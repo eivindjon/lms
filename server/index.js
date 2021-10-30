@@ -111,7 +111,7 @@ app.post("/delete_absense", (req, res) => {
 app.get("/getlessons/:date", (req, res) => {
   var date = req.params.date;
   console.log("Running query - Getting lessons for date: ", req.params.date);
-  db.query("SELECT * FROM lesson WHERE date = ?;", [date], (err, result) => {
+  db.query("SELECT lesson.description, lesson.startTime, lesson.endTime, lesson.note, lesson.color, class.className, subject.subject FROM lesson, class, subject WHERE lesson.date = ? AND class.classID = lesson.class_classID AND subject.subjectID = lesson.Subject_subjectID", [date], (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -122,7 +122,7 @@ app.get("/getlessons/:date", (req, res) => {
 });
 
 app.post("/insertlesson", (req,  res) => {
-  console.log("getting lessons..");
+  console.log("inserting lessons..");
   console.log(req.body)
   //REQUEST OBJECT COMES IN THIS FORMAT:
   /* const subjectPlan = {
