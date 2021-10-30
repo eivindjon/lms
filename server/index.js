@@ -121,8 +121,9 @@ app.get("/getlessons/:date", (req, res) => {
   });
 });
 
-app.post("/insertlessons:date", (req, res) => {
+app.post("/insertlesson", (req,  res) => {
   console.log("getting lessons..");
+  console.log(req.body)
   //REQUEST OBJECT COMES IN THIS FORMAT:
   /* const subjectPlan = {
     defaultDescription: defaultDescription,
@@ -144,16 +145,18 @@ app.post("/insertlessons:date", (req, res) => {
   // Takes paramaters start and end. Both are date objects where start is first day of semester. End is end of semester. Returns MySQL query formatted for insert into lesson table. These will be placeholders to render in client.
   function insertQuery(start, end) {
     let theArray = [];
-
+    
     while (start < end) {
+      let date = start
       let subquery = [];
-      let description = req.body.description;
-      let date = start.toLocaleString("en-CA").substr(0, 10);
+      let description = req.body.defaultDescription;
       let startTime = req.body.startTime;
       let endTime = req.body.endTime;
-      let note = "Ingen notater...";
-      let subject_subjectID = 2;
-      let class_classID = 1;
+      let note = req.body.defaultNote;
+      let subject_subjectID = req.body.subjectID;
+      let class_classID = req.body.classID;
+      let color = req.body.color
+      date = date.toLocaleString("en-CA").substr(0, 10);
       subquery.push(
         description,
         date,
@@ -161,20 +164,29 @@ app.post("/insertlessons:date", (req, res) => {
         endTime,
         note,
         subject_subjectID,
-        class_classID
+        class_classID,
+        color
       );
       console.log("Subquery looks like: ", subquery);
       theArray.push(subquery);
       start.setDate(start.getDate() + 7);
     }
-    console.log("The query array:", theArray);
+    return theArray;
   }
   //Nested arrays are turned into grouped lists (for bulk inserts), //e.g. [['a', 'b'], ['c', 'd']] turns into ('a', 'b'), ('c', 'd')
-  insertQuery(startU, endU);
-
+  var sql = "INSERT INTO `lesson`( `description`, `date`, `startTime`, `endTime`, `note`, `Subject_subjectID`, `class_classID`, `color`) VALUES ?"
+  const inserts = insertQuery(new Date(req.body.startDate), new Date(req.body.endDate));
+  
+  console.log("Inserts:", inserts)
   db.query(
-    "INSERT INTO lesson (lessonID, description, date, startTime, endTime, note, Subject_subjectID, class_classID) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);"
-  );
+    sql, [inserts],
+     (err, result) => {
+      if (err) {
+        console.log("Error message", err);
+      } else {
+        res.send(result);
+      }
+    })
 });
 
 app.listen(3001, () => {

@@ -68,7 +68,7 @@ const DatePick = (props) => {
         handleChange(date); // passes value to parent component
       }}
       monthsShown={2}
-      dateFormat="yyyy.MM.dd"
+      dateFormat="dd.MM.yyyy"
     />
   );
 };
