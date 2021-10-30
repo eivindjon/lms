@@ -64,9 +64,9 @@ app.get("/UserStats/:id", (req, res) => {
 app.post("/post_absent", (req, res) => {
   console.log("Posting Absent: ", req.body.id);
   // get todays date on format yyyy-mm-dd
-  const today = new Date().toLocaleDateString('en-CA')
+  const today = new Date().toLocaleDateString("en-CA");
   const absentStudent = {
-    date: today,    
+    date: today,
     student_studentID: req.body.id,
   };
   db.query("INSERT INTO absence SET ?", absentStudent, (err, result) => {
@@ -95,49 +95,91 @@ app.post("/delete_absense", (req, res) => {
   console.log("Deleting absense: ", req.body.absenceID);
 
   const absense = [req.body.absenceID];
-  db.query("DELETE FROM absence WHERE absenceID = ?", absense, (err, result) => {
-    if (err) {
-      throw err;
-    } else {
-      res.send(result);
-    }
-  });
-});
-
-app.get("/getlessons/:date", (req, res) => {
-  var date = req.params.date;
-  console.log("Running query - Getting lessons for date: ", req.params.date);
   db.query(
-    "SELECT * FROM lesson WHERE date = ?;",
-    [date],
+    "DELETE FROM absence WHERE absenceID = ?",
+    absense,
     (err, result) => {
       if (err) {
-        console.log(err);
+        throw err;
       } else {
-        console.log(result);
         res.send(result);
       }
     }
   );
 });
 
+app.get("/getlessons/:date", (req, res) => {
+  var date = req.params.date;
+  console.log("Running query - Getting lessons for date: ", req.params.date);
+  db.query("SELECT * FROM lesson WHERE date = ?;", [date], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result);
+      res.send(result);
+    }
+  });
+});
 
-// app.post("/getlessons:date" , (req, res) => {
-//   console.log("getting lessons..")
-//   Req is an object on format {
-//     lessonID: 12,
-//     description: "This",
-//     date: 
-         
+app.post("/insertlessons:date", (req, res) => {
+  console.log("getting lessons..");
+  //REQUEST OBJECT COMES IN THIS FORMAT:
+  /* const subjectPlan = {
+    defaultDescription: defaultDescription,
+    startDate: startDate,
+    endDate: endDate,
+    startTime: startTime,
+    endTime: endTime,
+    defaultNote: defaultNote,
+    subjectID: subjectID,
+    classID: classID
+  }; 
+  
+  DB FORMAT FOR DATE OBJECT
+      const norskTid = Intl.DateTimeFormat("en-CA").format(value);
+  */
+  
 
-//   db.query("INSERT INTO lesson (lessonID, description, date, startTime, endTime, note, Subject_subjectID, class_classID) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);")
-// })
 
+  // Takes paramaters start and end. Both are date objects where start is first day of semester. End is end of semester. Returns MySQL query formatted for insert into lesson table. These will be placeholders to render in client.
+  function insertQuery(start, end) {
+    let theArray = [];
+
+    while (start < end) {
+      let subquery = [];
+      let description = req.body.description;
+      let date = start.toLocaleString("en-CA").substr(0, 10);
+      let startTime = req.body.startTime;
+      let endTime = req.body.endTime;
+      let note = "Ingen notater...";
+      let subject_subjectID = 2;
+      let class_classID = 1;
+      subquery.push(
+        description,
+        date,
+        startTime,
+        endTime,
+        note,
+        subject_subjectID,
+        class_classID
+      );
+      console.log("Subquery looks like: ", subquery);
+      theArray.push(subquery);
+      start.setDate(start.getDate() + 7);
+    }
+    console.log("The query array:", theArray);
+  }
+  //Nested arrays are turned into grouped lists (for bulk inserts), //e.g. [['a', 'b'], ['c', 'd']] turns into ('a', 'b'), ('c', 'd')
+  insertQuery(startU, endU);
+
+  db.query(
+    "INSERT INTO lesson (lessonID, description, date, startTime, endTime, note, Subject_subjectID, class_classID) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);"
+  );
+});
 
 app.listen(3001, () => {
   console.log("Server listening on port 3001");
 });
 
-
 // Lesson sql
-// 
+//
