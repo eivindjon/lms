@@ -121,11 +121,12 @@ function MainPageCard(props) {
               width: '18rem',
               backgroundColor: lesson.color
             };
+            let lessonTime = lesson.startTime.substring(0,5) + "-" + lesson.endTime.substring(0,5);
             return (
-              <Card style={style}>
+              <Card style={style} className="mb-2">
                 <Card.Body>
                   <Card.Title>{lesson.subject}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">{lesson.className}</Card.Subtitle>
+                  <Card.Subtitle className="mb-2 text-muted">{lesson.className} Kl {lessonTime}</Card.Subtitle>
                   <Card.Text>
                     {lesson.description}
                   </Card.Text>

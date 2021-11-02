@@ -134,6 +134,7 @@ function CreateSubjectPlan() {
                     <option value="2">Naturfag</option>
                     <option value="3">Programmering</option>
                     <option value="4">Fysak</option>
+                    <option value="5">Samfunnsfag</option>
                   </Form.Select>
                 </Form.Group>
               </Row>

@@ -8,7 +8,6 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
-
 const mysql_pool = mysql.createPool({
   connectionLimit: 100,
   user: process.env.DB_USER,
@@ -38,59 +37,54 @@ app.get("/getstudents", (req, res) => {
   });
 });
 
-// // Gets userName for userStats page
-// app.get("/UserStats/:id/username", (req, res) => {
-//   var id = req.params.id;
-//   console.log("Running query - Getting username: ", id);
-//   mysql_pool.getConnection(function (err, connection) {
-//     if (err) {
-//       connection.release();
-//       console.log(' Error getting mysql_pool connection: ' + err);
-//       throw err;
-//     } else {
-//       connection.query(
-//         "SELECT firstName, lastName FROM student WHERE studentID = ?",
-//         [id],
-//         (err, result) => {
-//           if (err) {
-//             console.log(err);
-//           } else {
-//             res.send(result);
-//           }
-//           connection.release();
-//         }
-//       );
-//     }
+// Gets userName for userStats page
+app.get("/UserStats/:id/username", (req, res) => {
+  var id = req.params.id;
+  console.log("Running query - Getting username: ", id);
+  mysql_pool.getConnection((err, connection) => {
+    if (err) console.log(err);
+    console.log("Connected as ID:", connection.threadId);
 
-//   });
-// })
+    connection.query(
+      "SELECT firstName, lastName FROM student WHERE studentID = ?",
+      [id],
+      (err, result) => {
+        connection.release();
+        if (!err) {
+          res.send(result);
+        } else {
+          console.log("There was an error", err);
+        }
+        connection.release();
+      }
+    );
+  });
+});
 
-//   //Gets all absense from ONE student.
+//Gets all absense from ONE student.
 
-//   app.get("/UserStats/:id", (req, res) => {
-//     var id = req.params.id;
-//     console.log("Running query - Getting absense for student: ", req.params.id);
-//     mysql_pool.getConnection(function(err, connection) {
-//       if (err) {
-//         connection.release();
-//           console.log(' Error getting mysql_pool connection: ' + err);
-//           throw err;
-//         } else {
-//           db.query(
-//             "SELECT student.studentID, student.firstName, student.lastName, absence.date, absence.absenceID FROM student, absence WHERE absence.student_studentID = ? AND student.studentID=? ORDER BY absence.date ASC;",
-//             [id, id],
-//             (err, result) => {
-//               if (err) {
-//                 console.log(err);
-//               } else {
-//                 res.send(result);
-//               }
-//             }
-//           );
-//         }
-//         connection.release();
-//   });
-// })
+app.get("/UserStats/:id", (req, res) => {
+  var id = req.params.id;
+  console.log("Running query - Getting absense for student: ", req.params.id);
+
+  mysql_pool.getConnection((err, connection) => {
+    if (err) console.log(err);
+    console.log("Connected as ID:", connection.threadId);
+
+    connection.query(
+      "SELECT student.studentID, student.firstName, student.lastName, absence.date, absence.absenceID FROM student, absence WHERE absence.student_studentID = ? AND student.studentID=? ORDER BY absence.date DESC;",
+      [id, id],
+      (err, result) => {
+        connection.release();
+        if (!err) {
+          res.send(result);
+        } else {
+          console.log("there was an error:", err);
+        }
+      }
+    );
+  });
+});
 
 // Post absent from button in maintable "Borte!"
 app.post("/post_absent", (req, res) => {
@@ -122,53 +116,51 @@ app.post("/post_absent", (req, res) => {
   });
 });
 
-//   // Post absent from "egendefinert" in maintable
-//   app.post("/post_absent_custom", (req, res) => {
-//     console.log("Posting Absent: ", req.body.id);
-//     const absentStudent = req.body;
-//     mysql_pool.getConnection(function (err, connection) {
-//       if (err) {
-//         connection.release();
-//         console.log(' Error getting mysql_pool connection: ' + err);
-//         throw err;
-//       } else {
-//         connection.query("INSERT INTO absence SET ?", absentStudent, (err, result) => {
-//           if (err) {
-//             throw err;
-//           } else {
-//             res.send(result);
-//           }
-//         });
-//       }
-//       connection.release();
-//   });
-// })
+// Post absent from "egendefinert" in maintable
+app.post("/post_absent_custom", (req, res) => {
+  console.log("Posting Absent: ", req.body.student_studentID);
+  const absentStudent = req.body;
+  mysql_pool.getConnection((err, connection) => {
+    if (err) console.log(err);
+    console.log("Connected as ID:", connection.threadId);
 
-//   app.post("/delete_absense", (req, res) => {
-//     console.log("Deleting absense: ", req.body.absenceID);
+    connection.query(
+      "INSERT INTO absence SET ?",
+      absentStudent,
+      (err, result) => {
+        connection.release();
+        if (!err) {
+          res.send(result);
+        } else {
+          console.log("There was an error", err);
+        }
+      }
+    );
+  });
+});
 
-//     const absense = [req.body.absenceID];
-//     mysql_pool.getConnection(function (err, connection) {
-//       if (err) {
-//         connection.release();
-//         console.log(' Error getting mysql_pool connection: ' + err);
-//         throw err;
-//       } else {
-//         connection.query(
-//           "DELETE FROM absence WHERE absenceID = ?",
-//           absense,
-//           (err, result) => {
-//             if (err) {
-//               throw err;
-//             } else {
-//               res.send(result);
-//             }
-//           }
-//         );
-//       }
-//       connection.release();
-//   });
-// })
+app.post("/delete_absense", (req, res) => {
+  console.log("Deleting absense: ", req.body.absenceID);
+
+  const absense = [req.body.absenceID];
+  mysql_pool.getConnection((err, connection) => {
+    if (err) console.log(err);
+    console.log("Connected as ID:", connection.threadId);
+
+    connection.query(
+      "DELETE FROM absence WHERE absenceID = ?",
+      absense,
+      (err, result) => {
+        connection.release();
+        if (!err) {
+          res.send(result);
+        } else {
+          console.log("There was an error:", err);
+        }
+      }
+    );
+  });
+});
 
 app.get("/getlessons/:date", (req, res) => {
   var date = req.params.date;
@@ -194,65 +186,64 @@ app.get("/getlessons/:date", (req, res) => {
   });
 });
 
-//   app.post("/insertlesson", (req, res) => {
-//     console.log("inserting lessons..");
-//     console.log(req.body)
+app.post("/insertlesson", (req, res) => {
+  console.log("inserting lessons..");
+  console.log(req.body);
 
-//     // Takes paramaters start and end. Both are date objects where start is first day of semester. End is end of semester. Returns MySQL query formatted for insert into lesson table. These will be placeholders to render in client.
-//     function insertQuery(start, end) {
-//       let theArray = [];
+  // Takes paramaters start and end. Both are date objects where start is first day of semester. End is end of semester. Returns MySQL query formatted for insert into lesson table. These will be placeholders to render in client.
+  function insertQuery(start, end) {
+    let theArray = [];
 
-//       while (start < end) {
-//         let date = start
-//         let subquery = [];
-//         let description = req.body.defaultDescription;
-//         let startTime = req.body.startTime;
-//         let endTime = req.body.endTime;
-//         let note = req.body.defaultNote;
-//         let subject_subjectID = req.body.subjectID;
-//         let class_classID = req.body.classID;
-//         let color = req.body.color
-//         date = date.toLocaleString("en-CA").substr(0, 10);
-//         subquery.push(
-//           description,
-//           date,
-//           startTime,
-//           endTime,
-//           note,
-//           subject_subjectID,
-//           class_classID,
-//           color
-//         );
-//         console.log("Subquery looks like: ", subquery);
-//         theArray.push(subquery);
-//         start.setDate(start.getDate() + 7);
-//       }
-//       return theArray;
-//     }
-//     //Nested arrays are turned into grouped lists (for bulk inserts), //e.g. [['a', 'b'], ['c', 'd']] turns into ('a', 'b'), ('c', 'd')
-//     var sql = "INSERT INTO `lesson`( `description`, `date`, `startTime`, `endTime`, `note`, `Subject_subjectID`, `class_classID`, `color`) VALUES ?"
-//     const inserts = insertQuery(new Date(req.body.startDate), new Date(req.body.endDate));
+    while (start < end) {
+      let date = start;
+      let subquery = [];
+      let description = req.body.defaultDescription;
+      let startTime = req.body.startTime;
+      let endTime = req.body.endTime;
+      let note = req.body.defaultNote;
+      let subject_subjectID = req.body.subjectID;
+      let class_classID = req.body.classID;
+      let color = req.body.color;
+      date = date.toLocaleString("en-CA").substr(0, 10);
+      subquery.push(
+        description,
+        date,
+        startTime,
+        endTime,
+        note,
+        subject_subjectID,
+        class_classID,
+        color
+      );
+      console.log("Subquery looks like: ", subquery);
+      theArray.push(subquery);
+      start.setDate(start.getDate() + 7);
+    }
+    return theArray;
+  }
+  //Nested arrays are turned into grouped lists (for bulk inserts), //e.g. [['a', 'b'], ['c', 'd']] turns into ('a', 'b'), ('c', 'd')
+  var sql =
+    "INSERT INTO `lesson`( `description`, `date`, `startTime`, `endTime`, `note`, `Subject_subjectID`, `class_classID`, `color`) VALUES ?";
+  const inserts = insertQuery(
+    new Date(req.body.startDate),
+    new Date(req.body.endDate)
+  );
 
-//     console.log("Inserts:", inserts)
-//     mysql_pool.getConnection(function (err, connection) {
-//       if (err) {
-//         connection.release();
-//         console.log(' Error getting mysql_pool connection: ' + err);
-//         throw err;
-//       } else {
-//         db.query(
-//           sql, [inserts],
-//           (err, result) => {
-//             if (err) {
-//               console.log("Error message", err);
-//             } else {
-//               res.send(result);
-//             }
-//           })
-//       }
-//       connection.release();
-//   });
-// })
+  console.log("Inserts:", inserts);
+
+  mysql_pool.getConnection((err, connection) => {
+    if (err) console.log(err);
+    console.log("Connected as ID:", connection.threadId);
+    connection.query(sql, [inserts], (err, result) => {
+      connection.release();
+      if (!err) {
+        res.send(result);
+      } else {
+        console.log("Error message", err);
+      }
+    });
+  });
+});
 
 app.listen(3001, () => {
   console.log("Server listening on port 3001");
