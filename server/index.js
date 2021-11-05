@@ -139,6 +139,7 @@ app.post("/post_absent_custom", (req, res) => {
   });
 });
 
+// Delete absence from student.
 app.post("/delete_absense", (req, res) => {
   console.log("Deleting absense: ", req.body.absenceID);
 
@@ -162,6 +163,7 @@ app.post("/delete_absense", (req, res) => {
   });
 });
 
+// Gets all lessons for a given date.
 app.get("/getlessons/:date", (req, res) => {
   var date = req.params.date;
   console.log("Running query - Getting lessons for date: ", req.params.date);
@@ -171,7 +173,7 @@ app.get("/getlessons/:date", (req, res) => {
     console.log("Connected as ID:", connection.threadId);
 
     connection.query(
-      "SELECT lesson.description, lesson.startTime, lesson.endTime, lesson.note, lesson.color, class.className, subject.subject FROM lesson, class, subject WHERE lesson.date = ? AND class.classID = lesson.class_classID AND subject.subjectID = lesson.Subject_subjectID",
+      "SELECT lesson.lessonID, lesson.description, lesson.startTime, lesson.endTime, lesson.note, lesson.color, class.className, subject.subject FROM lesson, class, subject WHERE lesson.date = ? AND class.classID = lesson.class_classID AND subject.subjectID = lesson.Subject_subjectID",
       [date],
       (err, result) => {
         connection.release();
