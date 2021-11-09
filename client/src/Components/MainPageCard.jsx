@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Button } from "react-bootstrap";
 import { ArrowRight, ArrowLeft, PencilSquare } from "react-bootstrap-icons";
+import EditPostModal from "./EditPostModal";
 import Axios from "axios";
 
 function MainPageCard(props) {
@@ -8,6 +9,7 @@ function MainPageCard(props) {
   const [weekday, setWeekday] = useState(day.getDay());
   const [staticLessons, setStaticLessons] = useState(false);
   const [lessons, setLessons] = useState([{}]);
+  const [editState, setEditState] = useState(false);
 
   const dailyLessons = {
     0: [],
@@ -72,6 +74,10 @@ function MainPageCard(props) {
     }
   };
 
+  function editPost(postId) {
+    console.log("Edit post!", postId);
+  }
+
   useEffect(() => {
     console.log(day, "->Day - Has changed");
 
@@ -127,10 +133,12 @@ function MainPageCard(props) {
                     {lesson.className} Kl {startTime} - {endTime}
                   </Card.Subtitle>
                   <Card.Text>{lesson.description}</Card.Text>
+
                   <div className="float-end">
-                    <Button variant="link">
-                      <PencilSquare style={{ color: "#000000" }} />
-                    </Button>
+                    <EditPostModal
+                      postId={lesson.lessonID}
+                      postContent={lesson.description}
+                    />
                   </div>
                 </Card.Body>
                 <Card.Footer>

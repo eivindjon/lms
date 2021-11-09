@@ -139,6 +139,30 @@ app.post("/post_absent_custom", (req, res) => {
   });
 });
 
+// Post edited lesson plan
+// TODO: THIS HAS NOT BEEN COMPLETED!!!
+app.post("/updatelesson", (req, res) => {
+  console.log("Updating post: ", req.body.postId);
+  const absentStudent = req.body;
+  mysql_pool.getConnection((err, connection) => {
+    if (err) console.log(err);
+    console.log("Connected as ID:", connection.threadId);
+
+    connection.query(
+      "INSERT INTO absence SET ?" // ALTER ROW WHERE lessonID = postID,
+      absentStudent,
+      (err, result) => {
+        connection.release();
+        if (!err) {
+          res.send(result);
+        } else {
+          console.log("There was an error", err);
+        }
+      }
+    );
+  });
+});
+
 // Delete absence from student.
 app.post("/delete_absense", (req, res) => {
   console.log("Deleting absense: ", req.body.absenceID);
