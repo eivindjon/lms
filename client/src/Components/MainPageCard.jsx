@@ -11,15 +11,9 @@ function MainPageCard(props) {
   const [lessons, setLessons] = useState([{}]);
   const [editState, setEditState] = useState(false);
 
-  const dailyLessons = {
-    0: [],
-    1: ["Matematikk 9E", "Matematikk 8D", "Samfunnsfag 9E"],
-    2: ["Naturfag 9E", "Matematikk 9E", "Samfunnsfag 9E", "Programmering"],
-    3: ["Naturfag 8D", "Matematikk 8D"],
-    4: ["Naturfag 9E", "Fysak"],
-    5: ["Matematikk 9E", "Samfunnsfag 9E", "Matematikk 8D"],
-    6: [],
-  };
+  function getUpdatedLessonContent(day) {
+    setDay(day);
+  }
 
   const renderLessons = (object, weekday) => {
     console.log(object[weekday]);
@@ -138,6 +132,7 @@ function MainPageCard(props) {
                     <EditPostModal
                       postId={lesson.lessonID}
                       postContent={lesson.description}
+                      day={day}
                     />
                   </div>
                 </Card.Body>
