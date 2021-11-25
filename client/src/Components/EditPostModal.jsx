@@ -12,10 +12,12 @@ function LogCustomModal(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  function editPost(content, postId) {
+  function editPost(content, id) {
+    // Update state in parent "MainPageCard"
+
     const updatedLesson = {
       lessonContent: content,
-      postId: postId,
+      postId: id,
     };
     Axios.post(`http://localhost:3001/updatelesson`, updatedLesson).then(
       (res) => {
@@ -32,7 +34,7 @@ function LogCustomModal(props) {
     setPostContent(e.target.value);
   }
   function handleEdit() {
-    editPost(postContent);
+    editPost(postContent, postId);
   }
 
   return (
