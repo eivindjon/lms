@@ -132,6 +132,7 @@ function MainPageCard(props) {
                     <EditPostModal
                       postId={lesson.lessonID}
                       postContent={lesson.description}
+                      lessonNote={lesson.note}
                       day={day}
                     />
                   </div>

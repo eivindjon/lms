@@ -8,16 +8,18 @@ import { PencilSquare } from "react-bootstrap-icons";
 function LogCustomModal(props) {
   const [show, setShow] = useState(false);
   const [postContent, setPostContent] = useState(props.postContent);
+  const [lessonNote, setLessonNote] = useState(props.lessonNote);
   const postId = props.postId;
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  function editPost(content, id) {
+  function editPost(content, id, note) {
     // Update state in parent "MainPageCard"
 
     const updatedLesson = {
       lessonContent: content,
       postId: id,
+      lessonNote: note,
     };
     Axios.post(`http://localhost:3001/updatelesson`, updatedLesson).then(
       (res) => {
@@ -30,11 +32,14 @@ function LogCustomModal(props) {
     );
   }
 
-  function handleChange(e) {
+  function handleChangeDesc(e) {
     setPostContent(e.target.value);
   }
+  function handleChangeNote(e) {
+    setLessonNote(e.target.value);
+  }
   function handleEdit() {
-    editPost(postContent, postId);
+    editPost(postContent, postId, lessonNote);
   }
 
   return (
@@ -49,8 +54,14 @@ function LogCustomModal(props) {
         </Modal.Header>
         <Modal.Body>
           <textarea
-            style={{ "min-width": "100%", "min-height": "10em" }}
-            onChange={(e) => handleChange(e)}
+            defaultValue={postContent}
+            style={{ minWidth: "100%", minHeight: "10em" }}
+            onChange={(e) => handleChangeDesc(e)}
+          ></textarea>
+          <textarea
+            defaultValue={lessonNote}
+            style={{ minWidth: "100%", minHeight: "2em" }}
+            onChange={(e) => handleChangeNote(e)}
           ></textarea>
         </Modal.Body>
         <Modal.Footer>

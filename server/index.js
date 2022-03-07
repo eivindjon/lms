@@ -144,17 +144,19 @@ app.post("/post_absent_custom", (req, res) => {
 app.post("/updatelesson", (req, res) => {
   console.log("Updating post: ", req.body.postId);
   const lessonContent = req.body.lessonContent;
+  const lessonNote = req.body.lessonNote;
   const lessonId = req.body.postId;
   mysql_pool.getConnection((err, connection) => {
     if (err) console.log(err);
     console.log("Connected as ID:", connection.threadId);
 
     connection.query(
-      "UPDATE lesson SET description = ? WHERE lessonID = ?",
-      [lessonContent, lessonId],
+      "UPDATE lesson SET description = ? , note = ? WHERE lessonID = ?",
+      [lessonContent, lessonNote, lessonId],
       (err, result) => {
         connection.release();
         if (!err) {
+          console.log("result is as follow:", result);
           res.send(result);
         } else {
           console.log("There was an error", err);
