@@ -53,11 +53,13 @@ function LogCustomModal(props) {
           <Modal.Title>Hva skal det være:</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <h2>Lesson content</h2>
           <textarea
             defaultValue={postContent}
             style={{ minWidth: "100%", minHeight: "10em" }}
             onChange={(e) => handleChangeDesc(e)}
           ></textarea>
+          <h4>Lesson note</h4>
           <textarea
             defaultValue={lessonNote}
             style={{ minWidth: "100%", minHeight: "2em" }}

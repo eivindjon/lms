@@ -12,9 +12,10 @@ const DatePick = (props) => {
     // Here, we invoke the callback with the new value
     props.onChange(dato);
   }
-
+const readOnly = true
   return (
     <DatePicker
+    readonly = {readOnly} // Not sure if this is working
       renderCustomHeader={({
         monthDate,
         customHeaderCount,
